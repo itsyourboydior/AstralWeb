@@ -26,685 +26,1157 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body { 
             font-family: 'Poppins', sans-serif; 
             line-height: 1.6; 
             background: #0a0a0f;
             color: #e0e0e0;
             transition: all 0.3s ease;
+            overflow-x: hidden;
         }
 
-        /* Dark Header */
+        /* Video Background */
+        .video-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            opacity: 0.5;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(20, 15, 35, 0.7) 0%, rgba(30, 20, 50, 0.6) 50%, rgba(15, 10, 25, 0.8) 100%);
+            z-index: -1;
+        }
+
+        /* Neon Purple - BRIGHTER */
+        :root {
+            --purple-neon: #c084fc;
+            --purple-primary: #a855f7;
+            --purple-light: #c084fc;
+            --purple-dark: #7e22ce;
+            --purple-glow: rgba(168, 85, 247, 0.6);
+            --bg-dark: #121218;
+            --bg-card: rgba(30, 25, 45, 0.85);
+            --text-light: #f0ebfa;
+            --text-muted: #b8b8c8;
+        }
+
+        /* Reset & Base */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            line-height: 1.6; 
+            background: var(--bg-dark);
+            color: var(--text-light);
+            transition: all 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        /* Glowing effects */
+        .glow-text {
+            text-shadow: 0 0 20px var(--purple-glow), 0 0 40px var(--purple-glow);
+        }
+        
+        .glow-box {
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.3), inset 0 0 30px rgba(168, 85, 247, 0.05);
+        }
+
+        /* Header - BRIGHTER */
         header {
-            background: rgba(10, 10, 15, 0.95);
+            background: rgba(20, 15, 35, 0.95);
             backdrop-filter: blur(20px);
             color: white;
-            padding: 1rem 0;
+            padding: 0.7rem 0;
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid rgba(102, 126, 234, 0.3);
+            border-bottom: 1px solid var(--purple-primary);
+            box-shadow: 0 4px 30px rgba(168, 85, 247, 0.2);
         }
 
         nav {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 2rem;
+            padding: 0 1rem;
         }
 
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
+        .logo-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--purple-neon), var(--purple-dark));
+            border: 2px solid var(--purple-neon);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
             text-decoration: none;
-            color: #fff;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.5), inset 0 0 15px rgba(168, 85, 247, 0.3);
+        }
+
+        .logo-circle:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 35px rgba(168, 85, 247, 0.7), inset 0 0 20px rgba(168, 85, 247, 0.4);
+        }
+
+        .logo-img {
+            height: 28px;
+            border-radius: 6px;
         }
 
         .nav-right {
             display: flex;
             align-items: center;
-            gap: 1.5rem;
+            gap: 0.7rem;
         }
 
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 2rem;
+            gap: 0.8rem;
         }
 
         .nav-links a {
-            color: #e0e0e0;
+            color: var(--text-light);
             text-decoration: none;
             font-weight: 500;
+            font-size: 0.85rem;
             transition: all 0.3s;
             position: relative;
         }
 
-        .nav-links a:hover { color: #667eea; }
+        .nav-links a:hover { color: var(--purple-neon); text-shadow: 0 0 10px var(--purple-glow); }
 
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 0;
-            background: #667eea;
-            transition: width 0.3s;
-        }
-
-        .nav-links a:hover::after { width: 100%; }
-
-        /* Language Switcher */
         .lang-switcher {
-            background: rgba(20, 20, 35, 0.8);
-            border: 1px solid rgba(102, 126, 234, 0.3);
-            color: #e0e0e0;
-            padding: 0.6rem 1rem;
-            border-radius: 25px;
-            font-size: 0.9rem;
-            font-weight: 500;
+            background: rgba(30, 25, 50, 0.9);
+            border: 1px solid var(--purple-primary);
+            color: var(--text-light);
+            padding: 0.45rem 0.75rem;
+            border-radius: 18px;
+            font-size: 0.75rem;
             cursor: pointer;
             transition: all 0.3s;
-            backdrop-filter: blur(10px);
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
         }
 
         .lang-switcher:hover {
-            background: rgba(102, 126, 234, 0.1);
-            border-color: #667eea;
-            color: #fff;
-            transform: scale(1.05);
+            background: var(--purple-primary);
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.5);
         }
 
-        .lang-switcher.active { background: rgba(102, 126, 234, 0.2); }
-
         .cta-button {
-            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
-            padding: 0.8rem 1.8rem;
-            border-radius: 50px;
+            background: linear-gradient(135deg, var(--purple-neon), var(--purple-dark));
+            padding: 0.55rem 1.1rem;
+            border-radius: 25px;
             text-decoration: none;
             font-weight: 600;
+            font-size: 0.8rem;
             transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
         }
 
         .cta-button:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+            box-shadow: 0 0 35px rgba(168, 85, 247, 0.7);
         }
 
-        /* Hero */
+        /* Hero - BRIGHTER */
         .hero {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
-            color: white;
-            padding: 140px 2rem 100px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 20%, rgba(255, 107, 107, 0.3) 0%, transparent 50%);
-            pointer-events: none;
-        }
-
-        .hero > * { position: relative; z-index: 1; }
-
-        .hero h1 {
-            font-size: 3.8rem;
-            margin-bottom: 1.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #fff, #e0e0e0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero p {
-            font-size: 1.4rem;
-            margin-bottom: 2.5rem;
-            max-width: 650px;
-            margin-left: auto;
-            margin-right: auto;
-            opacity: 0.95;
-        }
-
-        /* Container & Sections */
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
-        section { padding: 90px 0; }
-        h2 {
-            font-size: 2.8rem;
-            text-align: center;
-            margin-bottom: 4rem;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        /* Team Cards */
-        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
-        .team-card {
-            background: rgba(20, 20, 35, 0.8);
-            backdrop-filter: blur(10px);
-            padding: 3rem 2.5rem;
-            border-radius: 25px;
-            border: 1px solid rgba(102, 126, 234, 0.2);
-            text-align: center;
-            transition: all 0.4s;
-        }
-
-        .team-card:hover { 
-            transform: translateY(-15px);
-            border-color: rgba(102, 126, 234, 0.5);
-            box-shadow: 0 25px 50px rgba(102, 126, 234, 0.2);
-        }
-
-        .team-photo {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            margin: 0 auto 2rem;
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 4rem;
-            color: white;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            text-align: center;
+            padding: 100px 1rem 50px;
+            position: relative;
         }
 
-        .team-card h3 { font-size: 2rem; margin-bottom: 0.8rem; color: #fff; }
-        .team-role { color: #667eea; font-size: 1.2rem; font-weight: 600; margin-bottom: 1.8rem; text-transform: uppercase; letter-spacing: 1px; }
+        .hero h1 {
+            font-size: clamp(1.8rem, 5vw, 2.6rem);
+            margin-bottom: 0.8rem;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 0 25px var(--purple-glow);
+        }
 
-        /* Services */
-        .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; max-width: 1100px; margin: 0 auto; }
-        .service-card {
-            background: rgba(20, 20, 35, 0.8);
-            backdrop-filter: blur(15px);
-            padding: 3.5rem 2.5rem;
-            border-radius: 25px;
-            border: 1px solid rgba(102, 126, 234, 0.15);
+        .hero p {
+            font-size: clamp(0.85rem, 2.2vw, 1rem);
+            margin-bottom: 1.2rem;
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
+            color: var(--text-muted);
+        }
+
+        .hero-badges {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.6rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .badge {
+            background: rgba(168, 85, 247, 0.2);
+            border: 1px solid var(--purple-neon);
+            padding: 0.35rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: var(--purple-neon);
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+        }
+
+        /* Sections */
+        .container { max-width: 1050px; margin: 0 auto; padding: 0 1rem; }
+        section { padding: 45px 0; }
+        
+        h2 {
+            font-size: clamp(1.4rem, 3.5vw, 1.8rem);
             text-align: center;
-            transition: all 0.4s;
-            height: 100%;
+            margin-bottom: 1.8rem;
+            color: var(--purple-neon);
+            text-shadow: 0 0 20px var(--purple-glow);
+        }
+
+        h3 {
+            font-size: 1rem;
+            margin-bottom: 0.4rem;
+            color: #fff;
+        }
+
+        /* Process Steps - GLOWING */
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.7rem;
+            margin-top: 1.8rem;
+        }
+
+        .process-step {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            padding: 1.3rem 0.7rem;
+            border-radius: 14px;
+            border: 1px solid var(--purple-primary);
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.15);
+        }
+
+        .process-step:hover {
+            transform: translateY(-5px);
+            border-color: var(--purple-neon);
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.4);
+        }
+
+        .step-number {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--purple-neon), var(--purple-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 700;
+            color: white;
+            margin: 0 auto 0.7rem;
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+        }
+
+        .process-step h3 {
+            font-size: 0.85rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .process-step p {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+/* Team - GLOWING */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.9rem;
+        }
+
+        .team-card {
+            background: var(--bg-card);
+            padding: 1.3rem;
+            border-radius: 16px;
+            border: 1px solid var(--purple-primary);
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.15);
+        }
+
+        .team-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--purple-neon);
+            box-shadow: 0 0 35px rgba(168, 85, 247, 0.3);
+        }
+
+        .team-photo {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--purple-neon), var(--purple-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            margin: 0 auto 0.8rem;
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.5);
+        }
+
+        .team-card h3 { font-size: 1.1rem; margin-bottom: 0.2rem; }
+        .team-role { color: var(--purple-neon); font-size: 0.75rem; font-weight: 600; margin-bottom: 0.6rem; text-transform: uppercase; letter-spacing: 1px; }
+        .team-card p { font-size: 0.8rem; color: var(--text-muted); }
+
+        /* Services - GLOWING */
+        .services-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.9rem;
+        }
+
+        .service-card {
+            background: var(--bg-card);
+            padding: 1.3rem;
+            border-radius: 16px;
+            border: 1px solid var(--purple-primary);
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.12);
         }
 
         .service-card:hover {
-            transform: translateY(-20px);
-            border-color: rgba(102, 126, 234, 0.4);
-            box-shadow: 0 30px 60px rgba(102, 126, 234, 0.25);
+            transform: translateY(-5px);
+            border-color: var(--purple-neon);
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.35);
         }
 
         .service-icon {
-            font-size: 4.5rem;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 2rem;
+            font-size: 2rem;
+            color: var(--purple-neon);
+            margin-bottom: 0.8rem;
+            text-shadow: 0 0 15px var(--purple-glow);
         }
 
-        .service-card h3 { font-size: 2rem; margin-bottom: 1.5rem; color: #fff; }
-        .service-card ul { text-align: left; margin: 1.5rem 0 2rem; list-style: none; }
+        .service-card h3 { font-size: 1rem; margin-bottom: 0.7rem; }
+        .service-card ul { text-align: left; margin: 0.7rem 0; list-style: none; }
         .service-card li { 
-            padding: 0.5rem 0; 
-            color: #b0b0b0; 
+            padding: 0.25rem 0; 
+            color: var(--text-muted); 
+            font-size: 0.8rem;
             position: relative; 
-            padding-left: 2rem; 
+            padding-left: 1.1rem; 
         }
         .service-card li::before {
             content: '✓';
             position: absolute;
             left: 0;
-            color: #667eea;
+            color: var(--purple-neon);
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 0.75rem;
         }
-        .service-author { font-weight: 600; color: #667eea; font-size: 1.1rem; }
+        .service-author { font-weight: 600; color: var(--purple-neon); font-size: 0.8rem; }
 
-        /* Stats - REMOVED #1 ranking */
+        /* Stats - GLOWING */
         .stats-grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
-            gap: 2rem; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 0.7rem; 
             text-align: center; 
-            margin: 5rem 0; 
+            margin: 1.8rem 0; 
         }
         .stat-item {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
-            backdrop-filter: blur(15px);
-            color: white;
-            padding: 2.5rem 2rem;
-            border-radius: 20px;
-            border: 1px solid rgba(102, 126, 234, 0.3);
-            transition: all 0.3s;
+            background: var(--bg-card);
+            padding: 1rem 0.7rem;
+            border-radius: 14px;
+            border: 1px solid var(--purple-primary);
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.15);
         }
-        .stat-item:hover { transform: translateY(-10px); border-color: rgba(102, 126, 234, 0.6); }
         .stat-number {
-            font-size: 3.5rem;
+            font-size: 1.6rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--purple-neon);
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.15rem;
+            text-shadow: 0 0 15px var(--purple-glow);
+        }
+        .stat-label { font-size: 0.65rem; color: var(--text-muted); }
+
+        /* Features - GLOWING */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.8rem;
         }
 
-        /* Contact */
-        .contact-section { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: white; }
-        .contact-form {
-            max-width: 700px;
-            margin: 0 auto;
-            background: rgba(20, 20, 35, 0.8);
-            backdrop-filter: blur(20px);
-            padding: 3rem;
-            border-radius: 25px;
-            border: 1px solid rgba(102, 126, 234, 0.2);
-        }
-        .form-group { margin-bottom: 1.8rem; }
-        input, textarea, select {
-            width: 100%;
-            padding: 1.3rem 1.5rem;
-            background: rgba(40, 40, 60, 0.8);
-            border: 2px solid rgba(102, 126, 234, 0.3);
-            border-radius: 15px;
-            font-family: inherit;
-            font-size: 1rem;
-            color: #e0e0e0;
+        .feature-card {
+            background: var(--bg-card);
+            padding: 1.1rem;
+            border-radius: 14px;
+            border: 1px solid var(--purple-primary);
+            text-align: center;
             transition: all 0.3s;
         }
-        input::placeholder, textarea::placeholder { color: #888; }
+
+        .feature-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--purple-neon);
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 1.6rem;
+            color: var(--purple-neon);
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 15px var(--purple-glow);
+        }
+
+        .feature-card h3 { font-size: 0.9rem; margin-bottom: 0.3rem; }
+        .feature-card p { font-size: 0.75rem; color: var(--text-muted); }
+
+        /* FAQ - GLOWING */
+        .faq-container {
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--bg-card);
+            border: 1px solid var(--purple-primary);
+            border-radius: 12px;
+            margin-bottom: 0.7rem;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.1);
+        }
+
+        .faq-item:hover {
+            border-color: var(--purple-neon);
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.25);
+        }
+
+        .faq-question {
+            padding: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            color: #fff;
+            font-size: 0.9rem;
+        }
+
+        .faq-question::after {
+            content: '+';
+            font-size: 1.2rem;
+            color: var(--purple-neon);
+            transition: transform 0.3s;
+            text-shadow: 0 0 10px var(--purple-glow);
+        }
+
+        .faq-item.active .faq-question::after {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            padding: 0 0.9rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 180px;
+            padding: 0 0.9rem 0.9rem;
+        }
+
+        /* Portfolio - GLOWING */
+        .portfolio-carousel {
+            position: relative;
+            max-width: 100%;
+            overflow: hidden;
+            border-radius: 18px;
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.2);
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .carousel-slide.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--purple-primary);
+            overflow: hidden;
+            margin: 0 auto;
+            max-width: 480px;
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.2);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 180px;
+            background: rgba(25, 20, 45, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid var(--purple-primary);
+        }
+
+        .project-placeholder {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--purple-neon);
+            text-shadow: 0 0 20px var(--purple-glow);
+        }
+
+        .project-info { padding: 1.1rem; }
+        .project-info h3 { font-size: 1rem; margin-bottom: 0.25rem; }
+        .project-info p { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.7rem; }
+        .project-link { color: var(--purple-neon); text-decoration: none; font-size: 0.8rem; font-weight: 600; }
+
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(168, 85, 247, 0.3);
+            border: 1px solid var(--purple-primary);
+            color: white;
+            font-size: 0.9rem;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s;
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+        }
+        .carousel-arrow:hover {
+            background: var(--purple-primary);
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.5);
+        }
+        .carousel-arrow.prev { left: 6px; }
+        .carousel-arrow.next { right: 6px; }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 0.9rem;
+        }
+
+        .dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: rgba(168, 85, 247, 0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .dot.active { background: var(--purple-neon); box-shadow: 0 0 10px var(--purple-glow); }
+
+        /* Contact - GLOWING */
+        .contact-section { background: rgba(20, 15, 35, 0.8); }
+        .contact-form {
+            max-width: 480px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            padding: 1.4rem;
+            border-radius: 16px;
+            border: 1px solid var(--purple-primary);
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.2);
+        }
+        .form-group { margin-bottom: 0.9rem; }
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75rem 0.9rem;
+            background: rgba(20, 15, 35, 0.9);
+            border: 2px solid var(--purple-primary);
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            transition: all 0.3s;
+            box-shadow: inset 0 0 10px rgba(168, 85, 247, 0.1);
+        }
+        input::placeholder, textarea::placeholder { color: #777; }
         input:focus, textarea:focus, select:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-            background: rgba(40, 40, 60, 1);
+            border-color: var(--purple-neon);
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.3), inset 0 0 10px rgba(168, 85, 247, 0.1);
+        }
+        textarea { resize: vertical; min-height: 90px; }
+
+        .contact-form button {
+            width: 100%;
+            padding: 0.9rem;
+            font-size: 0.95rem;
+            margin-top: 0.4rem;
         }
 
         /* Footer */
         footer {
-            background: #000;
-            color: #888;
+            background: rgba(10, 8, 18, 0.98);
+            color: var(--text-muted);
             text-align: center;
-            padding: 2.5rem 0;
-            border-top: 1px solid rgba(102, 126, 234, 0.1);
+            padding: 1.8rem 0;
+            border-top: 1px solid var(--purple-primary);
         }
 
-        /* Responsive */
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.2rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+
+        .footer-links a:hover { color: var(--purple-neon); text-shadow: 0 0 10px var(--purple-glow); }
+
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.2rem;
+            margin-bottom: 0.9rem;
+            font-size: 0.8rem;
+        }
+
+        .contact-info a { color: var(--text-muted); text-decoration: none; transition: all 0.3s; }
+        .contact-info a:hover { color: var(--purple-neon); text-shadow: 0 0 10px var(--purple-glow); }
+
+        /* Mobile */
         @media (max-width: 768px) {
             .nav-links { display: none; }
-            .nav-right { gap: 1rem; }
-            .hero h1 { font-size: 2.8rem; }
-            .about-grid, .services-grid { grid-template-columns: 1fr; }
+            .process-grid { grid-template-columns: repeat(3, 1fr); }
+            .team-grid, .services-grid, .stats-grid, .features-grid { grid-template-columns: 1fr; }
+            .carousel-arrow { display: none; }
+        }
+
+        @media (max-width: 480px) {
+            .process-grid { grid-template-columns: repeat(2, 1fr); }
+            .process-step:nth-child(5) { grid-column: span 2; }
         }
 
         /* Animations */
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(40px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .fade-in { animation: fadeInUp 0.8s ease-out; }
-  .logo-circle {
-    width: 85px;
-    height: 85px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.25), rgba(118, 75, 162, 0.25));
-    backdrop-filter: blur(20px);
-    border: 3px solid rgba(102, 126, 234, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 12px 40px rgba(102, 126, 234, 0.35);
-    text-decoration: none;
-}
+        .fade-in { animation: fadeInUp 0.6s ease-out; }
 
-.logo-img {
-    height: 48px !important;
-    width: auto !important;
-    border-radius: 12px;
-    padding: 4px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
-    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
-}
-
-.logo-circle:hover {
-    transform: scale(1.2) rotate(8deg);
-    border-color: rgba(102, 126, 234, 0.8);
-    box-shadow: 0 25px 70px rgba(102, 126, 234, 0.6);
-}
-
-.logo-circle:hover .logo-img {
-    transform: scale(1.15);
-    filter: drop-shadow(0 4px 16px rgba(102, 126, 234, 0.5));
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-    .logo-circle { width: 70px; height: 70px; }
-    .logo-img { height: 38px !important; }
-}
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(168, 85, 247, 0.3); }
+            50% { box-shadow: 0 0 35px rgba(168, 85, 247, 0.5); }
+        }
+        .pulse-glow { animation: pulse-glow 2s infinite; }
     </style>
 </head>
 <body>
-    <!-- Header with Language Switcher -->
+    <!-- Video Background -->
+    <video class="video-bg" autoplay muted loop playsinline>
+        <source src="background.mp4" type="video/mp4">
+    </video>background.mp4
+    <div class="overlay"></div>
+
+    <!-- Header -->
     <header>
         <nav>
-<a href="#home" class="logo-circle">
-    <img src="Astralweb.2.webp" alt="AstralWeb" class="logo-img">
-</a>
+            <a href="#home" class="logo-circle">
+                <img src="astralweb.1.webp" alt="AstralWeb" class="logo-img">
+            </a>
             <div class="nav-right">
                 <ul class="nav-links">
-                    <li><a href="#home" data-en="Home" data-sq="Ballina">Home</a></li>
-                    <li><a href="#team" data-en="Team" data-sq="Ekipi">Team</a></li>
-                    <li><a href="#services" data-en="Services" data-sq="Shërbimet">Services</a></li>
-                    <li><a href="#contact" data-en="Contact" data-sq="Kontakti">Contact</a></li>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#process">Process</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#portfolio">Portfolio</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#contact">Contact</a></li>
                 </ul>
-                <button class="lang-switcher active" data-lang="en" id="langToggle">
-                    <i class="fas fa-globe"></i> EN
-                </button>
-                <a href="#contact" class="cta-button" data-en="Free Quote" data-sq="Kërko Falas">Free Quote</a>
+                <button class="lang-switcher" id="langToggle">EN</button>
+                <a href="#contact" class="cta-button">Get Quote</a>
             </div>
         </nav>
     </header>
 
-<!-- Hero -->
-<section id="home" class="hero fade-in">
-    <div class="container">
-        <h1 data-en="Welcome to AstralWeb" data-sq="Mirë se vini në AstralWeb">Welcome to AstralWeb</h1>
-        <p data-en="Your trusted partner for <strong>professional web development</strong> and <strong>Google-ranking SEO</strong>. " 
-           data-sq="Partneri juaj i besuar për <strong>zhvillim profesional web</strong> dhe <strong>SEO me pozicione Google</strong>. ">
-            Your trusted partner for <strong>professional web development</strong> and <strong>Google-ranking SEO</strong>. 8+ years of proven experience delivering fast, high-converting websites that dominate search results.
-        </p>
-        <a href="#contact" class="cta-button" data-en="Start Your Project" data-sq="Fillo Projektin Tënd">Start Your Project</a>
-    </div>
-</section>
+    <!-- Hero -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-badges">
+                <span class="badge">8+ Years Experience</span>
+                <span class="badge">50+ Websites</span>
+                <span class="badge">100% Satisfaction</span>
+            </div>
+            <h1 data-en="Welcome to AstralWeb" data-sq="Mirëse vini në AstralWeb">Welcome to AstralWeb</h1>
+            <p data-en="Professional web development + SEO that actually ranks. Fast websites that convert visitors into customers." 
+               data-sq="Zhvillim profesionist web + SEO që vërtet renditet. Faqe të shpejta që konvertojnë vizitorët në klientë.">
+                Professional web development + SEO that actually ranks. Fast websites that convert visitors into customers.
+            </p>
+            <a href="#contact" class="cta-button" style="font-size: 1rem; padding: 0.8rem 1.8rem;">Filloje Projektin →</a>
+        </div>
+    </section>
+
+    <!-- Process -->
+    <section id="process" class="container">
+        <h2 data-en="How It Works" data-sq="Si Funksionon">How It Works</h2>
+        <div class="process-grid">
+            <div class="process-step fade-in">
+                <div class="step-number">1</div>
+                <h3 data-en="Agree on Price" data-sq="Marrëveshja e Çmimit">Agree on Price</h3>
+                <p data-en="We discuss your project and agree on a fair price." 
+                   data-sq="Diskutojmë projektin tuaj dhe marrim vesh për çmimin.">
+                    We discuss your project and agree on a fair price.
+                </p>
+            </div>
+            <div class="process-step fade-in">
+                <div class="step-number">2</div>
+                <h3 data-en="Payment" data-sq="Pagesa">Payment</h3>
+                <p data-en="Secure payment to start your project." 
+                   data-sq="Pagesë e sigurt për të filluar projektin.">
+                    Secure payment to start your project.
+                </p>
+            </div>
+            <div class="process-step fade-in">
+                <div class="step-number">3</div>
+                <h3 data-en="Questionnaire" data-sq="Pyetësori">Questionnaire</h3>
+                <p data-en="You fill our detailed business form. We learn about your goals, audience, brand, competitors, and what makes you unique." 
+                   data-sq="Ju plotësoni formularin tonë të biznesit. Mësojmë për qëllimet tuaja, audiencën, markën, konkurrentët dhe çka ju bën unik.">
+                    You fill our detailed business form. We learn about your goals, audience, brand, competitors, and what makes you unique.
+                </p>
+            </div>
+            <div class="process-step fade-in">
+                <div class="step-number">4</div>
+                <h3 data-en="We Build" data-sq="Ndërtojmë">We Build</h3>
+                <p data-en="We design and develop your custom website. You review at each stage - we make adjustments until it's perfect." 
+                   data-sq="Dizajnojmë dhe zhvillojmë faqen tuaj të personalizuar. Ju shihni në çdo fazë - bëjmë rregullime deri të jetë e përsosur.">
+                    We design and develop your custom website. You review at each stage - we make adjustments until it's perfect.
+                </p>
+            </div>
+            <div class="process-step fade-in">
+                <div class="step-number">5</div>
+                <h3 data-en="SEO & Launch" data-sq="SEO & Lansimi">SEO & Launch</h3>
+                <p data-en="We optimize for Google rankings, add finishing touches, test everything, and launch your site live." 
+                   data-sq="Optimizojmë për renditje në Google, shtojmë prekjet finale, testojmë gjithçka dhe Launchim faqen tuaj.">
+                    We optimize for Google rankings, add finishing touches, test everything, and launch your site live.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="container">
+        <h2 data-en="Why Choose AstralWeb?" data-sq="Pse të zgjidhni AstralWeb?" style="margin-top: 2rem;">Why Choose AstralWeb?</h2>
+        <div class="features-grid">
+            <div class="feature-card fade-in">
+                <div class="feature-icon"><i class="fas fa-rocket"></i></div>
+                <h3 data-en="Fast Load Times" data-sq="Koha e Shpejtë e Ngarkimit">Fast Load Times</h3>
+                <p data-en="Websites optimized for speed. Google loves fast sites, so will your visitors." 
+                   data-sq="Faqe të optimizuara për shpejtësi. Google i do faqet e shpejta, ashtu edhe vizitorët tuaj.">
+                    Websites optimized for speed. Google loves fast sites, so will your visitors.
+                </p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon"><i class="fas fa-mobile-alt"></i></div>
+                <h3 data-en="Mobile First" data-sq="Mobile First">Mobile First</h3>
+                <p data-en="Every site responsive. Looks perfect on phone, tablet, and desktop." 
+                   data-sq="Çdo faqe responsive. Duket perfekt në celular, tablet dhe kompjuter.">
+                    Every site responsive. Looks perfect on phone, tablet, and desktop.
+                </p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon"><i class="fas fa-search"></i></div>
+                <h3 data-en="SEO Built In" data-sq="SEO e Ndërtuar">SEO Built In</h3>
+                <p data-en="Every website comes with technical SEO. No extra cost." 
+                   data-sq="Çdo faqe vjen me SEO teknik. Pa kosto shtesë.">
+                    Every website comes with technical SEO. No extra cost.
+                </p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon"><i class="fas fa-hand-holding-usd"></i></div>
+                <h3 data-en="Fair Pricing" data-sq="Çmime të Drejta">Fair Pricing</h3>
+                <p data-en="No hidden fees. You know the total cost upfront." 
+                   data-sq="Pa tarifa të fshehura. E dieni koston totale para kohe.">
+                    No hidden fees. You know the total cost upfront.
+                </p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon"><i class="fas fa-clock"></i></div>
+                <h3 data-en="Fast Delivery" data-sq="Dorëzim i Shpejtë">Fast Delivery</h3>
+                <p data-en="Most projects done in 7-14 days. No long wait times." 
+                   data-sq="Shumica e projekteve bëhet në 7-14 ditë. Pa kohë të gjatë pritjeje.">
+                    Most projects done in 7-14 days. No long wait times.
+                </p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon"><i class="fas fa-headset"></i></div>
+                <h3 data-en="Ongoing Support" data-sq="Mbështetje e Vazhdueshme">Ongoing Support</h3>
+                <p data-en="Need changes after launch? We handle updates easily." 
+                   data-sq="Nevojiten ndryshime pas lançimit? Ne i trajtojmë lehtë ndryshimet.">
+                    Need changes after launch? We handle updates easily.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services" class="container">
+        <h2 data-en="Our Services" data-sq="Shërbimet Tona">Our Services</h2>
+        <div class="services-grid">
+            <div class="service-card fade-in">
+                <div class="service-icon"><i class="fas fa-laptop-code"></i></div>
+                <h3 data-en="Web Development" data-sq="Zhvillim Web">Web Development</h3>
+                <ul>
+                    <li data-en="Custom business websites" data-sq="Faqe biznesi të personalizuara">Custom business websites</li>
+                    <li data-en="E-commerce online stores" data-sq="Dyqane online e-commerce">E-commerce online stores</li>
+                    <li data-en="Landing pages that convert" data-sq="Landing pages që konvertojnë">Landing pages that convert</li>
+                    <li data-en="WordPress sites" data-sq="Faqe WordPress">WordPress sites</li>
+                    <li data-en="Web applications" data-sq="Aplikacione web">Web applications</li>
+                </ul>
+                <p class="service-author">Lead: Dior Rruka</p>
+            </div>
+            <div class="service-card fade-in">
+                <div class="service-icon"><i class="fas fa-chart-line"></i></div>
+                <h3 data-en="SEO Optimization" data-sq="Optimizim SEO">SEO Optimization</h3>
+                <ul>
+                    <li data-en="Technical SEO audits" data-sq="Audite teknike SEO">Technical SEO audits</li>
+                    <li data-en="Google ranking optimization" data-sq="Optimizim renditjeje Google">Google ranking optimization</li>
+                    <li data-en="Site speed optimization" data-sq="Optimizim shpejtësie">Site speed optimization</li>
+                    <li data-en="Local SEO for local businesses" data-sq="SEO lokal për biznese lokale">Local SEO for local businesses</li>
+                    <li data-en="Content strategy" data-sq="Strategji përmbajtjeje">Content strategy</li>
+                </ul>
+                <p class="service-author">Lead: Akil Rafuna</p>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-item fade-in">
+                <span class="stat-number">50+</span>
+                <span class="stat-label" data-en="Websites" data-sq="Faqe">Websites</span>
+            </div>
+            <div class="stat-item fade-in">
+                <span class="stat-number">100+</span>
+                <span class="stat-label" data-en="Optimized" data-sq="Optimizuar">Optimized</span>
+            </div>
+            <div class="stat-item fade-in">
+                <span class="stat-number">500%</span>
+                <span class="stat-label" data-en="Traffic Growth" data-sq="Rritje Trafiku">Traffic Growth</span>
+            </div>
+            <div class="stat-item fade-in">
+                <span class="stat-number">100%</span>
+                <span class="stat-label" data-en="Satisfied" data-sq="Të Kënaqur">Satisfied</span>
+            </div>
+        </div>
+    </section>
 
     <!-- Team -->
-    <section id="team" class="container">
-        <h2 data-en="Powerhouse Duo" data-sq="Duo Fuqishëm">Powerhouse Duo</h2>
-        <div class="about-grid">
+    <section class="container">
+        <h2 data-en="The Team" data-sq="Ekipi">The Team</h2>
+        <div class="team-grid">
             <div class="team-card fade-in">
-                <div class="team-photo">
-                    <i class="fas fa-code"></i>
-                </div>
+                <div class="team-photo"><i class="fas fa-code"></i></div>
                 <h3>Dior Rruka</h3>
                 <p class="team-role" data-en="Lead Web Developer" data-sq="Zhvilluesi Kryesor Web">Lead Web Developer</p>
-                <p data-en="8+ years building high-performance websites. React, Next.js, Node.js, WordPress specialist." 
-                   data-sq="8+ vite ndërtim faqesh të performancës së lartë. Specialist React, Next.js, Node.js, WordPress.">
-                    8+ years building high-performance websites. React, Next.js, Node.js, WordPress specialist.
+                <p data-en="8+ years building high-performance websites. React, Next.js, WordPress expert." 
+                   data-sq="8+ vite ndërtim faqesh të performancës së lartë.">
+                    8+ years building high-performance websites. 
                 </p>
             </div>
             <div class="team-card fade-in">
-                <div class="team-photo">
-                    <i class="fas fa-search"></i>
-                </div>
-                                       <h3>Akil Rafuna</h3>
-                <p class="team-role" data-en="SEO Master" data-sq="Mjeshtër SEO">SEO Master</p>
-                <p data-en="Technical SEO expert with proven top Google rankings. Site speed, content, & authority specialist." 
-                   data-sq="Ekspert SEO teknik me rezultate të provuara në Google. Specialist shpejtësie, përmbajtjeje & autoriteti.">
-                    Technical SEO expert with proven top Google rankings. Site speed, content, & authority specialist.
+                <div class="team-photo"><i class="fas fa-search"></i></div>
+                <h3>Akil Rafuna</h3>
+                <p class="team-role" data-en="SEO Expert" data-sq="Ekspert SEO">SEO Expert</p>
+                <p data-en="Technical SEO specialist. Proven results getting sites to rank on Google." 
+                   data-sq="Specialist SEO teknik. Rezultate të provuara në renditje në Google.">
+                    Technical SEO specialist. Proven results getting sites to rank on Google.
                 </p>
             </div>
         </div>
     </section>
-<br>
-    <!-- Services -->
-    <section id="services" style="background: rgba(15, 15, 25, 0.5);">
-        <div class="container">
-            <h2 data-en="Our Core Services" data-sq="Shërbimet Tona Kryesore">Our Core Services</h2>
-            <div class="services-grid">
-                <div class="service-card fade-in">
-                    <div class="service-icon">
-                        <i class="fas fa-laptop-code"></i>
-                    </div>
-                    <h3 data-en="Web Development" data-sq="Zhvillim Web">Web Development</h3>
-                    <ul>
-                        <li data-en="Custom responsive websites" data-sq="Faqe të personalizuara responsive">Custom responsive websites</li>
-                        <li data-en="E-commerce platforms" data-sq="Platforma e-commerce">E-commerce platforms</li>
-                        <li data-en="Web applications" data-sq="Aplikacione web">Web applications</li>
-                        <li data-en="WordPress development" data-sq="Zhvillim WordPress">WordPress development</li>
-                        <li data-en="Next.js / React / Vue.js" data-sq="Next.js / React / Vue.js">Next.js / React / Vue.js</li>
-                    </ul>
-                    <p class="service-author" data-en="Lead: Dior Rruka" data-sq="Përgjegjës: Dior Rruka">Lead: Dior Rruka</p>
+
+    <!-- FAQ -->
+    <section id="faq" class="container">
+        <h2 data-en="Frequently Asked Questions" data-sq="Pyetje të Bëra Shpesh">Frequently Asked Questions</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span data-en="How long does it take to build a website?" data-sq="Sa kohë duhet për të ndërtuar një faqe?">How long does it take to build a website?</span>
                 </div>
-                <div class="service-card fade-in">
-                    <div class="service-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3 data-en="SEO Optimization" data-sq="Optimizim SEO">SEO Optimization</h3>
-                    <ul>
-                        <li data-en="Technical SEO audits" data-sq="Audite teknike SEO">Technical SEO audits</li>
-                        <li data-en="On-page optimization" data-sq="Optimizim në faqe">On-page optimization</li>
-                        <li data-en="Google top rankings" data-sq="Pozicione të larta Google">Google top rankings</li>
-                        <li data-en="Content strategy" data-sq="Strategji përmbajtjeje">Content strategy</li>
-                        <li data-en="Local SEO dominance" data-sq="Dominim SEO lokal">Local SEO dominance</li>
-                    </ul>
-                    <p class="service-author" data-en="Lead: Akil Rafuna" data-sq="Përgjegjës: Akil Rafuna">Lead: Akil Rafuna</p>
+                <div class="faq-answer">
+                    <p data-en="Most business websites take 7-14 days. E-commerce sites take 14-21 days. We give you a timeline before starting." 
+                       data-sq="Shumica e faqeve të biznesit marrin 7-14 ditë. Dyqanet online marrin 14-21 ditë. Të japim një kohë para se të fillojmë.">
+                        Most business websites take 7-14 days. E-commerce sites take 14-21 days. We give you a timeline before starting.
+                    </p>
                 </div>
             </div>
-
-            <!-- Stats - REMOVED #1 ranking -->
-            <div class="stats-grid">
-                <div class="stat-item fade-in">
-                    <span class="stat-number">50+</span>
-                    <span data-en="Websites Delivered" data-sq="Faqe Dorëzuar">Websites Delivered</span>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span data-en="How much does a website cost?" data-sq="Sa kushton një faqe?">How much does a website cost?</span>
                 </div>
-                <div class="stat-item fade-in">
-                    <span class="stat-number">100+</span>
-                    <span data-en="Sites Optimized" data-sq="Faqe Optimizuar">Sites Optimized</span>
+                <div class="faq-answer">
+                    <p data-en="Business sites start at €300, e-commerce at €500. It depends on features, pages, and design complexity. We quote the total price upfront with no hidden fees." 
+                       data-sq="Faqet e biznesit fillojnë nga €300, e-commerce nga €500. Varet nga veçoritë, faqet dhe kompleksiteti i dizajnit. Japim çmimin total para me tarifa të fshehura.">
+                        Business sites start at €300, e-commerce at €500. It depends on features, pages, and design complexity. We quote the total price upfront with no hidden fees.
+                    </p>
                 </div>
-                <div class="stat-item fade-in">
-                    <span class="stat-number">500%</span>
-                    <span data-en="Avg Traffic Growth" data-sq="Rritje Trafiku Mesatare">Avg Traffic Growth</span>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span data-en="Do you offer SEO services?" data-sq="A ofroni shërbime SEO?">Do you offer SEO services?</span>
                 </div>
-                <div class="stat-item fade-in">
-                    <span class="stat-number">100%</span>
-                    <span data-en="Satisfaction" data-sq="Kënaqësi">Satisfaction</span>
+                <div class="faq-answer">
+                    <p data-en="Yes! Every website comes with basic technical SEO included. We also offer advanced SEO packages for ranking on Google. Ask us about our SEO services." 
+                       data-sq="Po! Çdo faqe vjen me SEO teknik bazë të përfshirë. Ofrojmë edhe paketa SEO të avancuara për renditje në Google. Pyesni për shërbimet tona SEO.">
+                        Yes! Every website comes with basic technical SEO included. We also offer advanced SEO packages for ranking on Google. Ask us about our SEO services.
+                    </p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span data-en="Can I update the website myself?" data-sq="A mund ta ndërroja vetë faqen?">Can I update the website myself?</span>
+                </div>
+                <div class="faq-answer">
+                    <p data-en="Yes! We build easy-to-use websites. Most clients use WordPress for easy updates. We also offer ongoing maintenance if you prefer." 
+                       data-sq="Po! Ndërtojmë faqe të lehta për përdorim. Shumica e klientëve përdorin WordPress për ndryshime të lehta. Ofrojmë edhe mirëmbajtje të vazhdueshme nëse preferoni.">
+                        Yes! We build easy-to-use websites. Most clients use WordPress for easy updates. We also offer ongoing maintenance if you prefer.
+                    </p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span data-en="What information do you need from me?" data-sq="Cfarë informacioni ju nevojitet?">What information do you need from me?</span>
+                </div>
+                <div class="faq-answer">
+                    <p data-en="After payment, you fill our detailed business questionnaire. We ask about your business, target audience, competitors, preferred colors/style, content, and goals. The more detail, the better your site!" 
+                       data-sq="Pas pagesës, plotësoni pyetësorin tonë të biznesit. Pyesim për biznesin tuaj, audiencën, konkurrentët, ngjyrat/stilin e preferuar, përmbajtjen dhe qëllimet. Sa më shumë detaje, aq më e mirë faqja juaj!">
+                        After payment, you fill our detailed business questionnaire. We ask about your business, target audience, competitors, preferred colors/style, content, and goals. The more detail, the better your site!
+                    </p>
                 </div>
             </div>
         </div>
     </section>
 
-<!-- Contact -->
-<section id="contact" class="contact-section">
-    <div class="container">
-        <h2 data-en="Ready For Top Rankings?" data-sq="Gati Për Pozicione të Larta?">Ready For Top Rankings?</h2>
-        <p style="text-align: center; margin-bottom: 3rem; font-size: 1.2rem; opacity: 0.9;" 
-           data-en="Free website + SEO consultation. Get your custom quote in 24 hours." 
-           data-sq="Konsultim falas website + SEO. Merr citatin tënd personal në 24 orë.">
-            Free website + SEO consultation. Get your custom quote in 24 hours.
-        </p>
-        <form class="contact-form fade-in" 
-              action="https://formspree.io/f/xgoryzpn" 
-              method="POST">
-              
-            <input type="hidden" name="_subject" value="New AstralWeb Quote Request">
-            <input type="hidden" name="_next" value="?submitted=1">
-            <input type="text" name="_gotcha" style="display:none" />
-            
-            <div class="form-group">
-                <input type="text" name="name" data-en-placeholder="Your Name *" data-sq-placeholder="Emri Juaj *" placeholder="Your Name *" required>
+    <!-- Portfolio -->
+    <section id="portfolio" class="container">
+        <h2 data-en="Our Portfolio" data-sq="Portofoli Ynë">Our Portfolio</h2>
+        <div class="portfolio-carousel">
+            <button class="carousel-arrow prev" onclick="moveCarousel(-1)">&#10094;</button>
+            <div class="carousel-track">
+                <div class="carousel-slide active">
+                    <div class="project-card">
+                        <div class="project-image">
+                             <img src="rf.png" alt="Project 1" width="500" height="200">
+                        </div>
+                        <div class="project-info">
+                            <h3>Project 1</h3>
+                            <p data-en="Business website description" data-sq="Përshkrim faqe biznesi">Business website description</p>
+                            <a href="https://rafunaconsulting.com/" class="project-link">View Website →</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-slide">
+                    <div class="project-card">
+                        <div class="project-image">
+                            <div class="project-placeholder">PROJECT 2</div>
+                        </div>
+                        <div class="project-info">
+                            <h3>Project 2</h3>
+                            <p data-en="E-commerce store description" data-sq="Përshkrim dyqani online">E-commerce store description</p>
+                            <a href="#" class="project-link">View Website →</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-slide">
+                    <div class="project-card">
+                        <div class="project-image">
+                            <div class="project-placeholder">PROJECT 3</div>
+                        </div>
+                        <div class="project-info">
+                            <h3>Project 3</h3>
+                            <p data-en="Landing page description" data-sq="Përshkrim landing page">Landing page description</p>
+                            <a href="#" class="project-link">View Website →</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <input type="email" name="email" data-en-placeholder="Your Email *" data-sq-placeholder="Email-i Juaj *" placeholder="Your Email *" required>
-            </div>
-            <div class="form-group">
-                <input type="url" name="website" data-en-placeholder="Current Website URL (optional)" data-sq-placeholder="URL e Faqes Aktuale (opsionale)" placeholder="Current Website URL (optional)">
-            </div>
-         <div class="form-group">
-    <select name="service" required>
-        <option value="" disabled selected style="display:none;">Select Service</option>
-        <option value="web" data-en="Web Development" data-sq="Zhvillim Web">Web Development</option>
-        <option value="seo" data-en="SEO Optimization" data-sq="Optimizim SEO">SEO Optimization</option>
-        <option value="both" data-en="Both (Recommended)" data-sq="Të Dyja (Rekomanduar)">Both (Recommended)</option>
-    </select>
-</div>
-            <div class="form-group">
-                <textarea name="message" rows="5" data-en-placeholder="Project details, budget, timeline & goals..." data-sq-placeholder="Detajet e projektit, buxheti, afati & qëllimet..." placeholder="Project details, budget, timeline & goals..." required></textarea>
-            </div>
-            
-            <!-- Submit Button -->
-            <button type="submit" class="cta-button" style="width: 100%; font-size: 1.2rem; padding: 1.3rem; margin-top: 1rem;" 
-                    data-en="Get Free Quote →" data-sq="Kërko Falas →">
-                Get Free Quote →
-            </button>
-        </form>
-    </div>
-</section>
+            <button class="carousel-arrow next" onclick="moveCarousel(1)">&#10095;</button>
+        </div>
+        <div class="carousel-dots">
+            <span class="dot active" onclick="goToSlide(0)"></span>
+            <span class="dot" onclick="goToSlide(1)"></span>
+            <span class="dot" onclick="goToSlide(2)"></span>
+        </div>
+    </section>
 
+    <!-- Contact -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2 data-en="Get Your Free Quote" data-sq="Merrni Çmimin Tuaj Falas">Get Your Free Quote</h2>
+            <p style="text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem; opacity: 0.9;" 
+               data-en="Free consultation. Get your custom quote in 24 hours." 
+               data-sq="Konsultim falas. Merrni çmimin tuaj personal në 24 orë.">
+                Free consultation. Get your custom quote in 24 hours.
+            </p>
+            <form class="contact-form fade-in" action="https://formspree.io/f/xgoryzpn" method="POST">
+                <input type="hidden" name="_subject" value="New AstralWeb Quote Request">
+                <input type="hidden" name="_next" value="?submitted=1">
+                <input type="text" name="_gotcha" style="display:none" />
+                
+                <div class="form-group">
+                    <input type="text" name="name" placeholder="Your Name *" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" name="email" placeholder="Your Email *" required>
+                </div>
+                <div class="form-group">
+                    <input type="url" name="website" placeholder="Current Website URL (optional)">
+                </div>
+                <div class="form-group">
+                    <select name="service" required>
+                        <option value="" disabled selected>Select Service</option>
+                        <option value="web">Web Development</option>
+                        <option value="seo">SEO Optimization</option>
+                        <option value="both">Both (Recommended)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <textarea name="message" placeholder="Project details, budget, timeline & goals..." required></textarea>
+                </div>
+                <button type="submit" class="cta-button">Get Free Quote →</button>
+            </form>
+        </div>
+    </section>
 
     <!-- Footer -->
-<footer>
-    <div class="container">
-        <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 2rem; margin-bottom: 1rem;">
-            <!-- Contact Info -->
-            <div style="display: flex; align-items: center; gap: 0.5rem; color: #b0b0b0; font-size: 1rem;">
-                <i class="fas fa-phone" style="color: #667eea;"></i>
-                <a href="tel:+38344817845" style="color: #e0e0e0; text-decoration: none; transition: color 0.3s;">
-                    <span data-en="+383 44 817 845" data-sq="+383 44 817 845">+383 44 817 845</span>
-                </a>
+    <footer>
+        <div class="container">
+            <div class="contact-info">
+                <a href="tel:+38344817845"><i class="fas fa-phone"></i> +383 44 817 845</a>
+                <a href="mailto:astralweb9@gmail.com"><i class="fas fa-envelope"></i> astralweb9@gmail.com</a>
+                <a href="https://instagram.com/astralw3b" target="_blank"><i class="fab fa-instagram"></i> @astralweb</a>
             </div>
-            
-            <div style="display: flex; align-items: center; gap: 0.5rem; color: #b0b0b0; font-size: 1rem;">
-                <i class="fas fa-envelope" style="color: #667eea;"></i>
-                <a href="mailto:hello@astralweb.com" style="color: #e0e0e0; text-decoration: none; transition: color 0.3s;">
-                    <span data-en="astralweb9@gmail.com" data-sq="astralweb9@gmail.com">astralweb9@gmail.com</span>
-                </a>
+            <div class="footer-links">
+                <a href="#home">Home</a>
+                <a href="#process">Process</a>
+                <a href="#services">Services</a>
+                <a href="#portfolio">Portfolio</a>
+                <a href="#faq">FAQ</a>
+                <a href="#contact">Contact</a>
             </div>
-            
-            <!-- Instagram Link -->
-            <a href="https://instagram.com/astralw3b" target="_blank" rel="noopener noreferrer" 
-               style="display: flex; align-items: center; gap: 0.5rem; color: #e0e0e0; text-decoration: none; font-weight: 500; transition: all 0.3s; font-size: 1.1rem;"
-               data-en="@astralweb" data-sq="@astralweb">
-                <i class="fab fa-instagram" style="font-size: 1.4rem; color: #fff; background: linear-gradient(135deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); 
-                           -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"></i>
-                <span>@astralweb</span>
-            </a>
+            <p data-en="© 2024 AstralWeb | Dior Rruka - Web Dev | Akil Rafuna - SEO" 
+               data-sq="© 2024 AstralWeb | Dior Rruka - Zhvillim Web | Akil Rafuna - SEO">
+                © 2024 AstralWeb | Dior Rruka - Web Dev | Akil Rafuna - SEO
+            </p>
         </div>
+    </footer>
+
+    <script>
+        // Language
+        let currentLang = 'en';
         
-        <!-- Copyright -->
-        <p data-en="© 2024 AstralWeb | <strong>Dior Rruka</strong> - Web Development | <strong>Akil Rafuna</strong> - SEO Optimization" 
-           data-sq="© 2024 AstralWeb | <strong>Dior Rruka</strong> - Zhvillim Web | <strong>Akil Rafuna</strong> - Optimizim SEO">
-            © 2024 AstralWeb | <strong>Dior Rruka</strong> - Web Development | <strong>Akil Rafuna</strong> - SEO Optimization
-        </p>
-        <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.7;" 
-           data-en="Dark mode excellence for modern businesses" 
-           data-sq="Ekselencë në modalitet të errët për bizneset moderne">
-            Dark mode excellence for modern businesses
-        </p>
-    </div>
-</footer>
-
-  <script>
-    // Language translations
-    let currentLang = 'en';
-
-    // Language switcher functionality
-    const langToggle = document.getElementById('langToggle');
-    const html = document.documentElement;
-
-    function switchLanguage(lang) {
-        currentLang = lang;
-        html.lang = lang;
-
-        // Update button
-        const langText = lang === 'en' ? 'EN' : 'SQ';
-        langToggle.innerHTML = `<i class="fas fa-globe"></i> ${langText}`;
-        langToggle.className = `lang-switcher active`;
-        langToggle.dataset.lang = lang;
-
-        // Update all translatable elements
-        document.querySelectorAll('[data-en]').forEach(el => {
-            const enText = el.dataset.en;
-            const sqText = el.dataset.sq;
-            const targetText = lang === 'en' ? enText : (sqText || enText);
+        function switchLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            document.getElementById('langToggle').innerText = lang.toUpperCase();
             
-            if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-                el.placeholder = targetText;
-            } else if (el.tagName === 'OPTION') {
-                el.textContent = targetText;
-            } else {
-                el.innerHTML = targetText;
-            }
-        });
-
-        // FIX: Refresh select dropdowns
-        const selects = document.querySelectorAll('select');
-        selects.forEach(select => {
-            const tempValue = select.value;
-            select.value = '';
-            select.value = tempValue;
-        });
-    }
-
-    langToggle.addEventListener('click', () => {
-        const nextLang = currentLang === 'en' ? 'sq' : 'en';
-        switchLanguage(nextLang);
-    });
-
-    // Smooth scrolling
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({ 
-                behavior: 'smooth', block: 'start'
+            document.querySelectorAll('[data-en]').forEach(el => {
+                const enText = el.dataset.en;
+                const sqText = el.dataset.sq;
+                const targetText = lang === 'en' ? enText : (sqText || enText);
+                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                    el.placeholder = targetText;
+                } else {
+                    el.innerHTML = targetText;
+                }
             });
-        });
-    });
-
-    // Scroll animations
-    const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('fade-in');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-    // Header scroll effect
-    window.addEventListener('scroll', () => {
-        const header = document.querySelector('header');
-        if (window.scrollY > 100) {
-            header.style.background = 'rgba(10, 10, 15, 0.98)';
-        } else {
-            header.style.background = 'rgba(10, 10, 15, 0.95)';
         }
-    });
 
-    // Formspree Success Message (doesn't interfere)
-    window.addEventListener('load', () => {
-        if (window.location.search.includes('submitted=1')) {
-            alert(currentLang === 'en' ? 
-                '✅ Success! We received your request. Reply within 24h.' : 
-                '✅ Sukses! Kërkesa e marrë. Përgjigjemi brenda 24h.');
+        document.getElementById('langToggle').addEventListener('click', () => {
+            switchLanguage(currentLang === 'en' ? 'sq' : 'en');
+        });
+
+        // FAQ Toggle
+        function toggleFAQ(element) {
+            element.parentElement.classList.toggle('active');
         }
+
+        // Carousel
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        const dots = document.querySelectorAll('.dot');
+
+        function showSlide(index) {
+            slides.forEach(s => s.classList.remove('active'));
+            dots.forEach(d => d.classList.remove('active'));
+            slides[index].classList.add('active');
+            dots[index].classList.add('active');
+            currentSlide = index;
+        }
+
+        function moveCarousel(direction) {
+            let newIndex = currentSlide + direction;
+            if (newIndex < 0) newIndex = slides.length - 1;
+            if (newIndex >= slides.length) newIndex = 0;
+            showSlide(newIndex);
+        }
+
+        function goToSlide(index) { showSlide(index); }
+
+        setInterval(() => { moveCarousel(1); }, 5000);
+
+        // Header scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            header.style.background = window.scrollY > 50 ? 'rgba(15, 10, 25, 0.98)' : 'rgba(15, 10, 25, 0.9)';
+        });
+
+        // Init
         switchLanguage('en');
-    });
-</script>
+    </script>
 </body>
 </html>
