@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="sq">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstralWeb - Web Development & SEO</title>
+    <meta name="description" content="We build + rank it. Professional web development and SEO optimization.">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="site-wrapper" style="overflow-x: hidden; width: 100%; position: relative;">
+        <div class="aurora">
+            <div class="aurora-orb"></div>
+            <div class="aurora-orb"></div>
+            <div class="aurora-orb"></div>
+        </div>
+
+        <video class="video-bg" autoplay muted loop playsinline>
+            <source src="background.mp4" type="video/mp4">
+        </video>
+        <div class="overlay"></div>
+
+        <header>
+            <nav>
+                <a href="#home" class="logo">
+                    <img src="astralweb.1.webp" alt="AstralWeb">
+                    <span>AstralWeb</span>
+                </a>
+                <div class="nav-right">
+                    <ul class="nav-links">
+                        <li><a href="#home" class="active" data-en="Home" data-sq="Kreu">Kreu</a></li>
+                        <li><a href="#services" data-en="Services" data-sq="Shërbimet">Shërbimet</a></li>
+                        <li><a href="#portfolio" data-en="Work" data-sq="Punët">Punët</a></li>
+                        <li><a href="#process" data-en="Process" data-sq="Procesi">Procesi</a></li>
+                        <li><a href="#faq" data-en="FAQ" data-sq="Pyetje">Pyetje</a></li>
+                    </ul>
+                    <button class="lang-btn" id="langToggle">EN</button>
+                    <a href="#contact" class="nav-cta" data-en="Start Project" data-sq="Fillo Projektin">Fillo
+                        Projektin</a>
+                    <button class="hamburger"><span></span><span></span><span></span></button>
+                </div>
+            </nav>
+        </header>
+        <div class="mobile-menu">
+            <a href="#home" data-en="Home" data-sq="Kreu">Kreu</a>
+            <a href="#services" data-en="Services" data-sq="Shërbimet">Shërbimet</a>
+            <a href="#portfolio" data-en="Work" data-sq="Punët">Punët</a>
+            <a href="#process" data-en="Process" data-sq="Procesi">Procesi</a>
+            <a href="#faq" data-en="FAQ" data-sq="Pyetje">Pyetje</a>
+            <a href="#contact" data-en="Contact" data-sq="Kontakti">Kontakti</a>
+        </div>
+
+        <section id="home" class="hero">
+            <div class="container">
+                <div class="hero-content reveal">
+                    <div class="hero-label">
+                        <span class="dot"></span>
+                        <span data-en="Available for new projects" data-sq="Të hapur për projekte të reja">Të hapur për
+                            projekte të reja</span>
+                    </div>
+                    <h1 data-en="Your competitors are ranking. <span class='gradient'>You're not.</span> Let's fix that."
+                        data-sq="Konkurrentët tuaj po renditen. <span class='gradient'>Ju jo.</span> Le ta ndryshojmë.">
+                        Konkurrentët tuaj po renditen. <span class='gradient'>Ju jo.</span> Le ta ndryshojmë.
+                    </h1>
+                    <p data-en="Most agencies deliver a standard template and walk away. We engineer ultra-performance custom sites and apply data-driven SEO strategies to place you at the top of local Google searches."
+                        data-sq="Shumica e agjencive ju japin një shabllon të thjeshtë dhe zhduken. Ne krijojmë faqe me performancë të jashtëzakonshme dhe optimizim të thellë SEO për t'ju ngjitur në krye të kërkimeve.">
+                        Shumica e agjencive ju japin një shabllon të thjeshtë dhe zhduken. Ne krijojmë faqe me performancë
+                        të jashtëzakonshme dhe optimizim të thellë SEO për t'ju ngjitur në krye të kërkimeve.
+                    </p>
+                    <div class="hero-btns">
+                        <a href="#portfolio" class="btn-primary" data-en="View Our Work" data-sq="Shiko Punët Tona">Shiko
+                            Punët Tona</a>
+                        <a href="#contact" class="btn-secondary" data-en="Get a Quote" data-sq="Merr Një Ofertë">Merr Një
+                            Ofertë</a>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="hero-stat">
+                            <span class="num">8<span>+</span></span>
+                            <span class="label" data-en="Years of Expertise" data-sq="Vite Përvojë">Vite Përvojë</span>
+                        </div>
+                        <div class="hero-stat">
+                            <span class="num">50<span>+</span></span>
+                            <span class="label" data-en="Completed Projects" data-sq="Projekte të Përfunduara">Projekte të Përfunduara</span>
+                        </div>
+                        <div class="hero-stat">
+                            <span class="num">100<span>%</span></span>
+                            <span class="label" data-en="Client Satisfaction" data-sq="Kënaqshmëri Klientësh">Kënaqshmëri Klientësh</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="services" class="container">
+            <div class="text-center reveal">
+                <span class="section-label" data-en="What We Do" data-sq="Çfarë Bëjmë">What We Do</span>
+                <h2 class="section-title" data-en="Everything you need to <span class='gradient'>grow online</span>"
+                    data-sq="Gjithçka që ju duhet për tu <span class='gradient'>rritur online</span>">Everything you need to <span class="gradient">grow online</span></h2>
+                <p class="section-sub"
+                    data-en="We fuse bespoke, high-conversion software engineering with rigorous SEO architectures to guarantee organic growth."
+                    data-sq="Kombinojmë inxhinierinë e avancuar të web-it për konvertim maksimal me arkitekturë rigoroze SEO për rritje organike.">
+                    We fuse bespoke, high-conversion software engineering with rigorous SEO architectures to guarantee organic growth.</p>
+            </div>
+            <div class="services-grid reveal">
+                <div class="service-card">
+                    <div class="service-icon-lg"><i class="fas fa-code"></i></div>
+                    <h3 data-en="Web Development" data-sq="Zhvillim Web">Web Development</h3>
+                    <ul>
+                        <li data-en="High-Performance Bespoke Websites" data-sq="Ndërtim Faqesh me Performancë të Lartë">
+                            High-Performance Bespoke Websites</li>
+                        <li data-en="Adaptive, Mobile-First Interfaces" data-sq="Ndërfaqe Adaptive e Optimizuar për Çdo Ekran">
+                            Adaptive, Mobile-First Interfaces</li>
+                        <li data-en="High-Conversion E-commerce & SaaS" data-sq="Sisteme E-commerce & Platforma SaaS të Shkallëzueshme">
+                            High-Conversion E-commerce & SaaS</li>
+                        <li data-en="Next-Gen Stack (React, Next.js, Node)" data-sq="Teknologjitë e Gjeneratës së Re (React, Next.js)">
+                            Next-Gen Stack (React, Next.js, Node)</li>
+                    </ul>
+                    <div class="service-lead" 
+                         data-en="<span class='status-pulse'></span><i class='fa-solid fa-user-gear'></i> Led by Dior Rruka" 
+                         data-sq="<span class='status-pulse'></span><i class='fa-solid fa-user-gear'></i> Udhëhequr nga Dior Rruka">
+                         <span class="status-pulse"></span><i class="fa-solid fa-user-gear"></i> Udhëhequr nga Dior Rruka
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon-lg"><i class="fas fa-rocket"></i></div>
+                    <h3 data-en="SEO Optimization" data-sq="Optimizim SEO">SEO Optimization</h3>
+                    <ul>
+                        <li data-en="Technical SEO & Schema Architecture" data-sq="Auditime Teknike dhe Arkitekturë e Strukturuar SEO">Technical SEO & Schema Architecture</li>
+                        <li data-en="Local GMB & Maps Search Dominance" data-sq="Dominim në Google Maps dhe Kërkime Lokale">Local GMB & Maps Search Dominance</li>
+                        <li data-en="Core Web Vitals & Speed Tuning" data-sq="Optimizim i Shpejtësisë dhe Core Web Vitals">Core Web Vitals & Speed Tuning</li>
+                        <li data-en="High-ROI Content & Keyword Funnels" data-sq="Strategji Përmbajtjeje & Fjalë Kyçe me Konvertim të Lartë">High-ROI Content & Keyword Funnels</li>
+                    </ul>
+                    <div class="service-lead" 
+                         data-en="<span class='status-pulse'></span><i class='fa-solid fa-rocket'></i> Led by Akil Rafuna" 
+                         data-sq="<span class='status-pulse'></span><i class='fa-solid fa-rocket'></i> Udhëhequr nga Akil Rafuna">
+                         <span class="status-pulse"></span><i class="fa-solid fa-rocket"></i> Udhëhequr nga Akil Rafuna
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-strip reveal">
+                <div class="stat-card">
+                    <span class="stat-num">99%</span>
+                    <span class="stat-label" data-en="Uptime" data-sq="Koha aktive">Koha aktive</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-num">1s</span>
+                    <span class="stat-label" data-en="Loading Time" data-sq="Koha e ngarkimit">Koha e ngarkimit</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-num">#1</span>
+                    <span class="stat-label" data-en="Google Ranking" data-sq="Renditje në Google">Renditje në Google</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-num-static">24/7</span>
+                    <span class="stat-label" data-en="Support" data-sq="Suport">Suport</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="portfolio" class="container">
+            <div class="text-center reveal">
+                <span class="section-label" data-en="Our Portfolio" data-sq="Portofoli Ynë">Our Portfolio</span>
+                <h2 class="section-title" data-en="Featured <span class='gradient'>Projects</span>" data-sq="Projekte të <span class='gradient'>Zgjedhura</span>">Featured <span class="gradient">Projects</span></h2>
+                <p class="section-sub" data-en="Real results for real businesses."
+                    data-sq="Rezultate reale për biznese reale.">Real results for real businesses.</p>
+            </div>
+
+            <div class="circ-carousel reveal" id="circCarousel">
+                <div class="circ-carousel__grid">
+                    <!-- Image stack -->
+                    <div class="circ-carousel__images" id="circImages">
+                        <div class="circ-carousel__img-wrap" data-index="0">
+                            <img src="Capture.PNG" alt="Rafuna Consulting" draggable="false">
+                        </div>
+                        <div class="circ-carousel__img-wrap" data-index="1">
+                            <img src="Capture1.PNG" alt="Rafuna SEO" draggable="false">
+                        </div>
+                        <div class="circ-carousel__img-wrap" data-index="2">
+                            <img src="Capture2.PNG" alt="Art n'Flok" draggable="false">
+                        </div>
+                    </div>
+
+                    <!-- Content panel -->
+                    <div class="circ-carousel__content" id="circContent">
+                        <div class="circ-carousel__text-wrap" id="circTextWrap">
+                            <h3 class="circ-carousel__name" id="circName">Rafuna Consulting</h3>
+                            <p class="circ-carousel__designation" id="circDesignation">Financial Consulting Firm</p>
+                            <p class="circ-carousel__quote" id="circQuote">Complete website redesign with modern glassmorphism aesthetics, integrated financial dashboard, and full SEO optimization achieving top Google rankings.</p>
+                        </div>
+                        <div class="circ-carousel__arrows">
+                            <button class="circ-carousel__arrow circ-carousel__arrow--prev" id="circPrev" aria-label="Previous project">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                            <button class="circ-carousel__arrow circ-carousel__arrow--next" id="circNext" aria-label="Next project">
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dots -->
+                <div class="circ-carousel__dots" id="circDots">
+                    <span class="circ-carousel__dot active" data-index="0"></span>
+                    <span class="circ-carousel__dot" data-index="1"></span>
+                    <span class="circ-carousel__dot" data-index="2"></span>
+                </div>
+            </div>
+        </section>
+
+        <section id="process" class="container">
+            <div class="text-center reveal">
+                <span class="section-label" data-en="How It Works" data-sq="Si Funksionon">How It Works</span>
+                <h2 class="section-title" data-en="Our Proven <span class='gradient'>Process</span>" data-sq="Procesi Ynë <span class='gradient'>i Provuar</span>">Our Proven <span class="gradient">Process</span></h2>
+                <p class="section-sub" data-en="From concept to launch, we follow a transparent and structured engineering process."
+                    data-sq="Nga koncepti deri te lansimi, ndjekim një proces inxhinierik të strukturuar dhe transparent.">From concept to launch, we follow a transparent and structured engineering process.</p>
+            </div>
+            <div class="timeline reveal">
+                <div class="timeline-progress"></div>
+                <div class="timeline-step">
+                    <div class="timeline-dot">1</div>
+                    <div class="timeline-content">
+                        <h3 data-en="1. Strategy & Pricing Alignment" data-sq="1. Strategjia & Çmimi">1. Strategy & Pricing Alignment</h3>
+                        <p data-en="We analyze your business goals first, then agree on a tailored scope and fair investment model."
+                            data-sq="Ne analizojmë qëllimet tuaja digjitale dhe përcaktojmë një buxhet transparent e të bazuar në vlerë.">We analyze your business goals first, then agree on a tailored scope and fair investment model.</p>
+                    </div>
+                </div>
+                <div class="timeline-step">
+                    <div class="timeline-dot">2</div>
+                    <div class="timeline-content">
+                        <h3 data-en="2. Project Kickoff" data-sq="2. Pagesa & Fillimi">2. Project Kickoff</h3>
+                        <p data-en="Flexible billing structures trigger our design sprints and allocate your dedicated developers."
+                            data-sq="Pagesa fillon zyrtarisht sprintin tonë të zhvillimit dhe rezervon inxhinierët për projektin tuaj.">Flexible billing structures trigger our design sprints and allocate your dedicated developers.</p>
+                    </div>
+                </div>
+                <div class="timeline-step">
+                    <div class="timeline-dot">3</div>
+                    <div class="timeline-content">
+                        <h3 data-en="3. Deep Dive Discovery" data-sq="3. Pyetësori i Detajuar">3. Deep Dive Discovery</h3>
+                        <p data-en="We dissect your target audience, brand DNA, and competitors to engineer a unique market advantage."
+                            data-sq="Ne analizojmë audiencën tuaj, zërin e markës dhe konkurrentët për të krijuar një avantazh unik.">We dissect your target audience, brand DNA, and competitors to engineer a unique market advantage.</p>
+                    </div>
+                </div>
+                <div class="timeline-step">
+                    <div class="timeline-dot">4</div>
+                    <div class="timeline-content">
+                        <h3 data-en="4. Development & Feedback Loops" data-sq="4. Ndërtimi & Kodimi">4. Development & Feedback Loops</h3>
+                        <p data-en="Watch your site take shape in a staging environment. We refine it interactively until it matches your exact expectations."
+                            data-sq="Shikoni faqen tuaj të marrë jetë në platformën tonë me rishikime të vazhdueshme dhe pa kompromise në dizajn.">Watch your site take shape in a staging environment. We refine it interactively until it matches your exact expectations.</p>
+                    </div>
+                </div>
+                <div class="timeline-step">
+                    <div class="timeline-dot">5</div>
+                    <div class="timeline-content">
+                        <h3 data-en="5. SEO Injection & Launch" data-sq="5. Optimizimi SEO & Lansimi">5. SEO Injection & Launch</h3>
+                        <p data-en="We optimize performance score to 100%, deploy rich schema markups, and push your site live to dominate Google."
+                            data-sq="Optimizojmë çdo kod për shpejtësi maksimale, vendosim kodet SEO dhe lansojmë faqen për të dominuar.">We optimize performance score to 100%, deploy rich schema markups, and push your site live to dominate Google.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq" class="container reveal">
+            <div class="text-center">
+                <span class="section-label" data-en="FAQ" data-sq="Pyetje">FAQ</span>
+                <h2 class="section-title" data-en="Common Questions" data-sq="Pyetje të Shpeshta">Common Questions</h2>
+            </div>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span data-en="Why shouldn't I just use Wix or Squarespace?"
+                            data-sq="Pse të mos përdor thjesht Wix ose Squarespace?">Why shouldn't I just use Wix or
+                            Squarespace?</span>
+                        <div class="faq-icon"><i class="fas fa-plus"></i></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p data-en="Website builders are incredibly slow, have terrible SEO capabilities, and you don't truly own your site. We build custom, high-performance sites that Google loves and actually convert visitors into customers."
+                            data-sq="Platformat për ndërtim faqesh janë shumë të ngadalta, kanë aftësi të dobëta SEO dhe ju nuk e zotëroni vërtet faqen tuaj. Ne ndërtojmë faqe të personalizuara me performancë të lartë që Google i do dhe kthejnë vizitorët në klientë.">
+                            Website builders are incredibly slow, have terrible SEO capabilities, and you don't truly
+                            own your site. We build custom, high-performance sites that Google loves and actually
+                            convert visitors into customers.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span data-en="How long does it take to build?" data-sq="Sa kohë duhet për tu ndërtuar?">How
+                            long does it take to build?</span>
+                        <div class="faq-icon"><i class="fas fa-plus"></i></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p data-en="Most business websites take 7-14 days. E-commerce and more complex web apps take 14-21 days. We establish a clear timeline before any payment is made."
+                            data-sq="Shumica e faqeve të biznesit marrin 7-14 ditë. E-commerce dhe aplikacionet më komplekse marrin 14-21 ditë. Ne vendosim një afat të qartë para çdo pagese.">
+                            Most business websites take 7-14 days. E-commerce and more complex web apps take 14-21 days.
+                            We establish a clear timeline before any payment is made.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span data-en="Will I be able to update the site myself?"
+                            data-sq="A do mund ta përditësoj vetë faqen?">Will I be able to update the site
+                            myself?</span>
+                        <div class="faq-icon"><i class="fas fa-plus"></i></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p data-en="Yes. We integrate easy-to-use Content Management Systems (CMS) so you can easily update text, add blog posts, or manage products without needing to code."
+                            data-sq="Po. Ne integrojmë Sisteme të Menaxhimit të Përmbajtjes (CMS) të lehta për tu përdorur, kështu që mund të përditësoni tekstin, të shtoni postime në blog ose të menaxhoni produkte pa koduar.">
+                            Yes. We integrate easy-to-use Content Management Systems (CMS) so you can easily update
+                            text, add blog posts, or manage products without needing to code.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span data-en="Do you offer ongoing support after launch?"
+                            data-sq="A ofroni mbështetje të vazhdueshme pas lansimit?">Do you offer ongoing support
+                            after launch?</span>
+                        <div class="faq-icon"><i class="fas fa-plus"></i></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p data-en="Yes! We provide ongoing support and maintenance packages. Whether you need technical updates, content changes, or continuous SEO optimization, we've got you covered."
+                            data-sq="Po! Ne ofrojmë paketa për mbështetje dhe mirëmbajtje të vazhdueshme. Pavarësisht nëse keni nevojë për përditësime teknike, ndryshime të përmbajtjes, ose optimizim të vazhdueshëm SEO, ne jemi këtu për ju.">
+                            Yes! We provide ongoing support and maintenance packages. Whether you need technical
+                            updates, content changes, or continuous SEO optimization, we've got you covered.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span data-en="What happens if I don't like the initial design?"
+                            data-sq="Çfarë ndodh nëse nuk më pëlqen dizajni fillestar?">What happens if I don't like the
+                            initial design?</span>
+                        <div class="faq-icon"><i class="fas fa-plus"></i></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p data-en="We work closely with you during the questionnaire phase to understand your vision. We provide iterations until you are 100% satisfied with the design before moving to final development."
+                            data-sq="Ne punojmë ngushtë me ju gjatë fazës së pyetësorit për të kuptuar vizionin tuaj. Ne ofrojmë rishikime derisa të jeni 100% të kënaqur me dizajnin para se të kalojmë në zhvillimin përfundimtar.">
+                            We work closely with you during the questionnaire phase to understand your vision. We
+                            provide iterations until you are 100% satisfied with the design before moving to final
+                            development.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact-section">
+            <div class="container reveal">
+                <div class="text-center">
+                    <span class="section-label" data-en="Contact Us" data-sq="Na Kontaktoni">Contact Us</span>
+                    <h2 class="section-title" data-en="Ready to dominate your market?"
+                        data-sq="Gati për të dominuar tregun tuaj?">Ready to dominate your market?</h2>
+                    <p class="section-sub" data-en="Get your custom proposal within 24 hours."
+                        data-sq="Merrni propozimin tuaj të personalizuar brenda 24 orëve.">Get your custom proposal
+                        within 24 hours.</p>
+                </div>
+                <form class="contact-form" action="https://formspree.io/f/xgoryzpn" method="POST">
+                    <input type="hidden" name="_next" value="?submitted=1">
+                    <input type="hidden" name="_subject" value="New AstralWeb Quote Request">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input type="text" name="name" placeholder="Your Name *" autocomplete="name" data-en="Your Name *" data-sq="Emri Juaj *" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" name="email" placeholder="Your Email *" autocomplete="email" data-en="Your Email *" data-sq="Email Juaj *" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input type="url" name="website" placeholder="Current Website (optional)"
+                                autocomplete="url" data-en="Current Website (optional)" data-sq="Faqja Aktuale (opsionale)">
+                        </div>
+                        <div class="form-group">
+                            <select name="service" required>
+                                <option value="" disabled selected data-en="Select Service *" data-sq="Zgjidhni Shërbimin *">Select Service *</option>
+                                <option value="web" data-en="Web Development" data-sq="Zhvillim Web">Web Development</option>
+                                <option value="seo" data-en="SEO Optimization" data-sq="Optimizim SEO">SEO Optimization</option>
+                                <option value="both" data-en="Both (Recommended)" data-sq="Të dyja (Rekomandohet)">Both (Recommended)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="message" placeholder="Tell us about your project goals and timeline..." data-en="Tell us about your project goals and timeline..." data-sq="Na tregoni për qëllimet dhe afatet e projektit tuaj..." required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn" data-en="Send Request" data-sq="Dërgo Kërkesën">Send
+                        Request</button>
+                </form>
+            </div>
+        </section>
+
+        <footer>
+            <div class="container">
+                <div class="footer-top">
+                    <div class="footer-brand">
+                        <a href="#home" class="logo">
+                            <img src="astralweb.1.webp" alt="AstralWeb">
+                            <span>AstralWeb</span>
+                        </a>
+                        <p data-en="Professional web development and SEO optimization that drives real business growth."
+                            data-sq="Zhvillim profesional i web-it dhe optimizim SEO që sjell rritje reale të biznesit.">
+                            Professional web development and SEO optimization that drives real business growth.</p>
+                    </div>
+                    <div class="footer-col">
+                        <h4 data-en="Services" data-sq="Shërbimet">Services</h4>
+                        <a href="#" data-en="Web Development" data-sq="Zhvillim Web">Web Development</a>
+                        <a href="#" data-en="SEO Optimization" data-sq="Optimizim SEO">SEO Optimization</a>
+                        <a href="#" data-en="E-Commerce" data-sq="E-Commerce">E-Commerce</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4 data-en="Company" data-sq="Kompania">Company</h4>
+                        <a href="#portfolio" data-en="Portfolio" data-sq="Portofoli">Portfolio</a>
+                        <a href="#process" data-en="Process" data-sq="Procesi">Process</a>
+                        <a href="#faq" data-en="FAQ" data-sq="Pyetje">FAQ</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4 data-en="Contact" data-sq="Kontakti">Contact</h4>
+                        <a href="tel:+38344817845">+383 44 817 845</a>
+                        <a href="mailto:astralweb9@gmail.com">astralweb9@gmail.com</a>
+                        <a href="https://instagram.com/astralw3b" target="_blank">@astralw3b</a>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p data-en="&copy; 2026 AstralWeb. All rights reserved."
+                        data-sq="&copy; 2026 AstralWeb. Të gjitha të drejtat e rezervuara.">&copy; 2026 AstralWeb. All
+                        rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+
+        <a href="https://wa.me/38344817845" class="whatsapp-btn" target="_blank" aria-label="Chat on WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
