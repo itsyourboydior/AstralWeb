@@ -1245,6 +1245,13 @@ label {
   -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 
+.hiw-visual-card.active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+
 .hiw-card-header {
   display: flex;
   align-items: center;
