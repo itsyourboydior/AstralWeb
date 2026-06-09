@@ -385,7 +385,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Reset translations on mobile so they flow inline
                     gsap.set(btn, { xPercent: 0, x: 0, y: 0, opacity: 1, scale: 1 });
                     if (isActive) {
-                        btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                        const btnOffsetLeft = btn.offsetLeft;
+                        const btnWidth = btn.offsetWidth;
+                        const trackWidth = track.offsetWidth;
+                        const targetScroll = btnOffsetLeft - (trackWidth / 2) + (btnWidth / 2);
+                        // Use scrollLeft directly to avoid WebKit page-scrolling bug on smooth scrollTo
+                        track.scrollLeft = targetScroll;
                     }
                 }
 
@@ -436,9 +441,13 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Handle resize events to recalculate layout behavior
+        // Handle resize events to recalculate layout behavior (only on width change to prevent mobile URL bar scroll jumps)
+        let lastWidth = window.innerWidth;
         window.addEventListener('resize', () => {
-            updateCarousel(currentIndex);
+            if (window.innerWidth !== lastWidth) {
+                lastWidth = window.innerWidth;
+                updateCarousel(currentIndex);
+            }
         });
 
         // Initial update

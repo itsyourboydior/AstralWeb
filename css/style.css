@@ -412,7 +412,7 @@ section {
   background: var(--color-pure-white);
   border-radius: var(--radius-cards);
   padding: 16px;
-  box-shadow: var(--shadow-subtle);
+  box-shadow: rgba(4, 23, 43, 0.06) 0px 0px 0px 1px, rgba(0, 0, 0, 0.14) 0px 24px 38px -4px, rgba(0, 0, 0, 0.08) 0px 10px 15px -5px;
   z-index: 5;
   display: flex;
   flex-direction: column;
