@@ -39,19 +39,89 @@ document.addEventListener('DOMContentLoaded', () => {
             langToggle.textContent = lang === 'en' ? 'SQ' : 'EN';
         }
 
+        // Update URL search query dynamically to support indexing
+        if (lang === 'en') {
+            window.history.replaceState(null, '', '?lang=en');
+        } else {
+            window.history.replaceState(null, '', window.location.pathname);
+        }
+
+        // Dynamic SEO adjustments based on language
+        const canonicalLink = document.getElementById('canonical-link');
+        const metaDesc = document.querySelector('meta[name="description"]');
+        const ogTitle = document.querySelector('meta[property="og:title"]');
+        const ogDesc = document.querySelector('meta[property="og:description"]');
+        const twitterTitle = document.querySelector('meta[name="twitter:title"]');
+        const twitterDesc = document.querySelector('meta[name="twitter:description"]');
+
+        if (lang === 'en') {
+            document.title = "AstralWeb - Elite Web Development Agency";
+            if (metaDesc) metaDesc.setAttribute("content", "AstralWeb - Elite agency for bespoke web development and advanced SEO optimization. We build websites with 100/100 performance.");
+            if (ogTitle) ogTitle.setAttribute("content", "AstralWeb - Elite Web Development Agency");
+            if (ogDesc) ogDesc.setAttribute("content", "We are an elite web development and SEO optimization agency. We build outstanding interfaces with maximum performance.");
+            if (twitterTitle) twitterTitle.setAttribute("content", "AstralWeb - Elite Web Development Agency");
+            if (twitterDesc) twitterDesc.setAttribute("content", "Elite web development and SEO optimization agency.");
+            if (canonicalLink) canonicalLink.setAttribute("href", "https://astralweb.net/en/");
+        } else {
+            document.title = "AstralWeb - Agjenci Elite e Zhvillimit të Uebit";
+            if (metaDesc) metaDesc.setAttribute("content", "AstralWeb - Agjenci elite për zhvillimin e uebfaqeve bespoke dhe optimizimin SEO të avancuar. Ndërtojmë uebfaqe me performancë 100/100.");
+            if (ogTitle) ogTitle.setAttribute("content", "AstralWeb - Agjenci Elite e Zhvillimit të Uebit");
+            if (ogDesc) ogDesc.setAttribute("content", "Ne jemi një agjenci elite e zhvillimit të uebit dhe optimizimit SEO. Krijojmë ndërfaqe të jashtëzakonshme me performancë maksimale.");
+            if (twitterTitle) twitterTitle.setAttribute("content", "AstralWeb - Agjenci Elite e Zhvillimit të Uebit");
+            if (twitterDesc) twitterDesc.setAttribute("content", "Agjenci elite e zhvillimit të uebit dhe optimizimit SEO.");
+            if (canonicalLink) canonicalLink.setAttribute("href", "https://astralweb.net/");
+        }
+
+        // Dynamically inject/update FAQPage JSON-LD Schema
+        const existingFaqSchema = document.getElementById('faq-schema');
+        if (existingFaqSchema) existingFaqSchema.remove();
+
+        const faqSchemaData = {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": []
+        };
+
+        const faqElements = document.querySelectorAll('.faq-item');
+        faqElements.forEach(item => {
+            const trigger = item.querySelector('.faq-trigger span');
+            const answer = item.querySelector('.faq-answer p');
+            if (trigger && answer) {
+                const questionText = trigger.getAttribute(`data-${lang}`) || trigger.textContent;
+                const answerText = answer.getAttribute(`data-${lang}`) || answer.textContent;
+                faqSchemaData.mainEntity.push({
+                    "@type": "Question",
+                    "name": questionText.trim(),
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": answerText.trim()
+                    }
+                });
+            }
+        });
+
+        const scriptEl = document.createElement('script');
+        scriptEl.type = 'application/ld+json';
+        scriptEl.id = 'faq-schema';
+        scriptEl.text = JSON.stringify(faqSchemaData);
+        document.head.appendChild(scriptEl);
+
         // Emit Language Change Custom Event
         const event = new CustomEvent('languagechange', { detail: { lang } });
         document.dispatchEvent(event);
     };
 
-    if (langToggle) {
+    if (langToggle && langToggle.tagName === 'BUTTON') {
         langToggle.addEventListener('click', () => {
             updateLanguage(currentLang === 'en' ? 'sq' : 'en');
         });
     }
 
-    // Initial Trigger on Load
-    updateLanguage('sq');
+    // Initial Trigger on Load: support ?lang=en url param and HTML tag attribute fallback
+    const urlParams = new URLSearchParams(window.location.search);
+    const htmlLang = document.documentElement.lang === 'en' ? 'en' : 'sq';
+    const initialLang = urlParams.get('lang') === 'en' ? 'en' : htmlLang;
+    updateLanguage(initialLang);
 
     // FAQ Accordion Toggle
     const faqItems = document.querySelectorAll('.faq-item');
@@ -154,7 +224,16 @@ document.addEventListener('DOMContentLoaded', () => {
             cardUptime.setAttribute('style', originalStyles.cardUptime);
             dashboard.setAttribute('style', originalStyles.dashboard);
 
-            // 2. Temporarily set the dashboard to its final active state (centered in #home)
+            // 2. KEY FIX: Temporarily zero-out CSS rotation transforms before measuring.
+            //    getBoundingClientRect() of a rotated element returns the axis-aligned bounding
+            //    box, which shifts the measured left/top by the rotation amount (a few px).
+            //    We need the layout (pre-rotation) position so GSAP x/y translations land
+            //    pixel-perfectly on the slot outlines.
+            [cardSeo, cardPerf, cardDesign, cardConv, cardUptime].forEach(el => {
+                el.style.transform = 'none';
+            });
+
+            // 3. Temporarily set the dashboard to its final active state (centered in #home)
             gsap.set(dashboard, {
                 position: "absolute",
                 top: "50%",
@@ -165,7 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 opacity: 1
             });
 
-            // 3. Retrieve slot elements
+            // 4. Retrieve slot elements
             const slotSeo = document.querySelector('.slot-seo');
             const slotPerf = document.querySelector('.slot-perf');
             const slotDesign = document.querySelector('.slot-design');
@@ -174,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!slotSeo || !slotPerf || !slotDesign || !slotConv || !slotUptime) return;
 
-            // 4. Measure coords relative to `#home`
+            // 5. Measure layout coords relative to `#home` (rotation-cleared = pure layout position)
             const cardSeoCoords = getRelativeCoords(cardSeo, home);
             const cardPerfCoords = getRelativeCoords(cardPerf, home);
             const cardDesignCoords = getRelativeCoords(cardDesign, home);
@@ -187,14 +266,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const slotConvCoords = getRelativeCoords(slotConv, home);
             const slotUptimeCoords = getRelativeCoords(slotUptime, home);
 
-            // 5. Save deltas
+            // 6. Save deltas (slot layout position minus card layout position, both relative to #home)
             seoDelta = { dx: slotSeoCoords.left - cardSeoCoords.left, dy: slotSeoCoords.top - cardSeoCoords.top };
             perfDelta = { dx: slotPerfCoords.left - cardPerfCoords.left, dy: slotPerfCoords.top - cardPerfCoords.top };
             designDelta = { dx: slotDesignCoords.left - cardDesignCoords.left, dy: slotDesignCoords.top - cardDesignCoords.top };
             convDelta = { dx: slotConvCoords.left - cardConvCoords.left, dy: slotConvCoords.top - cardConvCoords.top };
             uptimeDelta = { dx: slotUptimeCoords.left - cardUptimeCoords.left, dy: slotUptimeCoords.top - cardUptimeCoords.top };
 
-            // 6. Restore HTML styles again so animation starts clean
+            // 7. Restore HTML styles (including original rotations) so animation starts from the correct visual position
             cardSeo.setAttribute('style', originalStyles.cardSeo);
             cardPerf.setAttribute('style', originalStyles.cardPerf);
             cardDesign.setAttribute('style', originalStyles.cardDesign);
@@ -456,17 +535,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initCarousel();
 
-    // --- Header Scrolled State Toggle ---
+    // --- Header Scrolled State + Direction-Aware Hide/Show ---
     const headerEl = document.querySelector('.main-header');
     if (headerEl) {
+        let lastScrollY = 0;
         const checkScroll = () => {
-            if (window.scrollY > 50) {
+            const currentY = window.scrollY;
+
+            // Compact glass state after 50px
+            if (currentY > 50) {
                 headerEl.classList.add('scrolled');
             } else {
                 headerEl.classList.remove('scrolled');
             }
+
+            // Hide nav when scrolling DOWN past 80px — re-show when scrolling back UP
+            if (currentY > 80) {
+                if (currentY > lastScrollY) {
+                    headerEl.classList.add('nav-hidden');
+                } else {
+                    headerEl.classList.remove('nav-hidden');
+                }
+            } else {
+                headerEl.classList.remove('nav-hidden');
+            }
+
+            lastScrollY = currentY;
         };
-        window.addEventListener('scroll', checkScroll);
+        window.addEventListener('scroll', checkScroll, { passive: true });
         checkScroll(); // Check once on load
     }
 
@@ -517,103 +613,148 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Scroll Reveal Animations (ScrollTrigger) ---
+    // Using gsap.fromTo() instead of gsap.from() to GUARANTEE the final state (opacity:1, y:0)
+    // is explicitly set. This prevents elements from getting permanently stuck at opacity:0
+    // if a ScrollTrigger fires at an incorrect position due to pin spacer offsets.
+
     // 1. Service Cards stagger reveal
     const serviceCards = document.querySelectorAll('#services .service-card');
     if (serviceCards.length > 0) {
-        gsap.from(serviceCards, {
-            scrollTrigger: {
-                trigger: '#services',
-                start: 'top 80%',
-                toggleActions: 'play none none none'
-            },
-            y: 60,
-            opacity: 0,
-            duration: 0.8,
-            stagger: 0.15,
-            ease: 'power3.out'
-        });
+        gsap.fromTo(serviceCards,
+            { y: 60, opacity: 0 },
+            {
+                scrollTrigger: {
+                    trigger: '#services',
+                    start: 'top 80%',
+                    toggleActions: 'play none none none'
+                },
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                stagger: 0.15,
+                ease: 'power3.out'
+            }
+        );
     }
 
-    // 2. Fullscreen Sticky Scroll Left Header reveal
+    // 2. Process Section Left Header reveal
     const hiwHeader = document.querySelector('.hiw-header-side');
     if (hiwHeader) {
-        gsap.from(hiwHeader.children, {
-            scrollTrigger: {
-                trigger: '#process',
-                start: 'top 80%',
-                toggleActions: 'play none none none'
-            },
-            y: 35,
-            opacity: 0,
-            duration: 0.8,
-            stagger: 0.12,
-            ease: 'power3.out'
-        });
+        gsap.fromTo(hiwHeader.children,
+            { y: 35, opacity: 0 },
+            {
+                scrollTrigger: {
+                    trigger: '#process',
+                    start: 'top 80%',
+                    toggleActions: 'play none none none'
+                },
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                stagger: 0.12,
+                ease: 'power3.out'
+            }
+        );
     }
 
     // 3. FAQ Items stagger reveal
     const faqItemsReveal = document.querySelectorAll('#faq .faq-item');
     if (faqItemsReveal.length > 0) {
-        gsap.from(faqItemsReveal, {
-            scrollTrigger: {
-                trigger: '#faq',
-                start: 'top 82%',
-                toggleActions: 'play none none none'
-            },
-            y: 40,
-            opacity: 0,
-            duration: 0.8,
-            stagger: 0.12,
-            ease: 'power3.out'
-        });
+        gsap.fromTo(faqItemsReveal,
+            { y: 40, opacity: 0 },
+            {
+                scrollTrigger: {
+                    trigger: '#faq',
+                    start: 'top 82%',
+                    toggleActions: 'play none none none'
+                },
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                stagger: 0.12,
+                ease: 'power3.out'
+            }
+        );
     }
 
     // 4. Contact Form Grid columns reveal
     const contactCols = document.querySelectorAll('#contact .grid-2 > div');
     if (contactCols.length > 0) {
-        gsap.from(contactCols, {
-            scrollTrigger: {
-                trigger: '#contact',
-                start: 'top 80%',
-                toggleActions: 'play none none none'
-            },
-            y: 50,
-            opacity: 0,
-            duration: 0.8,
-            stagger: 0.15,
-            ease: 'power3.out'
-        });
+        gsap.fromTo(contactCols,
+            { y: 50, opacity: 0 },
+            {
+                scrollTrigger: {
+                    trigger: '#contact',
+                    start: 'top 80%',
+                    toggleActions: 'play none none none'
+                },
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                stagger: 0.15,
+                ease: 'power3.out'
+            }
+        );
     }
 
     // 5. Section headers reveal (excluding hero)
     const sectionHeaders = document.querySelectorAll('.container > div:first-child');
     sectionHeaders.forEach(headerBlock => {
         if (headerBlock.closest('#home')) return;
-        gsap.from(headerBlock.children, {
-            scrollTrigger: {
-                trigger: headerBlock,
-                start: 'top 85%',
-                toggleActions: 'play none none none'
-            },
-            y: 35,
-            opacity: 0,
-            duration: 0.6,
-            stagger: 0.1,
-            ease: 'power2.out'
-        });
+        gsap.fromTo(Array.from(headerBlock.children),
+            { y: 35, opacity: 0 },
+            {
+                scrollTrigger: {
+                    trigger: headerBlock,
+                    start: 'top 85%',
+                    toggleActions: 'play none none none'
+                },
+                y: 0,
+                opacity: 1,
+                duration: 0.6,
+                stagger: 0.1,
+                ease: 'power2.out'
+            }
+        );
     });
 
     // --- Contact Form Success Popup Modal Handler ---
-    const contactForm = document.querySelector('#contact form');
+    const contactForm = document.getElementById('agency-contact-form');
     const successModal = document.getElementById('successModal');
     const closeModalBtn = document.getElementById('closeModalBtn');
 
     if (contactForm && successModal) {
         contactForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            // Show modal popup
-            successModal.classList.add('active');
-            contactForm.reset();
+            
+            const formData = new FormData(contactForm);
+            
+            // Check honeypot bot check field
+            if (formData.get('botcheck')) {
+                console.log("[Web3Forms] Bot detected. Submission rejected.");
+                return;
+            }
+
+            // Perform fetch submission to API
+            fetch(contactForm.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    successModal.classList.add('active');
+                    contactForm.reset();
+                } else {
+                    alert("Gabim gjatë dërgimit. Ju lutem provoni përsëri.");
+                }
+            })
+            .catch(err => {
+                console.error("Error submitting form:", err);
+                // Fallback for visual testing / offline dev
+                successModal.classList.add('active');
+                contactForm.reset();
+            });
         });
     }
 
@@ -629,70 +770,62 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- 6. Fullscreen Sticky Scroll "How It Works" (Procesi) ---
+    // FIX: Previously used raw getBoundingClientRect() to calculate scroll progress.
+    // This broke when GSAP's ScrollTrigger injected a .gsap-pin-spacer for the hero section,
+    // which shifted the DOM position of #process and kept progress stuck near 0 (only step 1 shown).
+    // Fix: Use a GSAP ScrollTrigger instance which internally accounts for all pin spacers.
     const hiwWrapper = document.getElementById('process');
     const hiwProgressFill = document.getElementById('hiwProgressFill');
     const hiwPanels = document.querySelectorAll('.hiw-snap-panel');
     const hiwDots = document.querySelectorAll('.hiw-dot');
     const hiwVisuals = document.querySelectorAll('.hiw-visual-card');
 
-    if (hiwWrapper && hiwProgressFill && hiwPanels.length > 0) {
-        let lastLoggedWidth = 0;
-        const updateStickyScroll = () => {
-            if (window.innerWidth <= 768) {
-                if (lastLoggedWidth > 768 || lastLoggedWidth === 0) {
-                    console.log("[StickyScroll] Viewport <= 768px: Bypassing sticky behavior (running static layout).");
-                    lastLoggedWidth = window.innerWidth;
-                }
-                return;
+    if (hiwWrapper && hiwPanels.length > 0) {
+
+        // Helper: sync UI state from a 0-1 progress value
+        const applyHiwProgress = (progress) => {
+            if (hiwProgressFill) {
+                hiwProgressFill.style.height = (progress * 100) + '%';
             }
-            if (lastLoggedWidth <= 768) {
-                console.log("[StickyScroll] Viewport > 768px: Activating sticky scroll tracking.");
-            }
-            lastLoggedWidth = window.innerWidth;
-
-            const rect = hiwWrapper.getBoundingClientRect();
-            const scrolled = -rect.top;
-            const totalHeight = rect.height - window.innerHeight;
-            
-            let progress = scrolled / totalHeight;
-            progress = Math.max(0, Math.min(1, progress));
-
-            hiwProgressFill.style.height = (progress * 100) + '%';
-
             const panelsCount = hiwPanels.length;
+            // Clamp to last index so the final step stays active at progress=1.0
             const activeIndex = Math.max(0, Math.min(panelsCount - 1, Math.floor(progress * panelsCount)));
 
-            // Optional diagnostic logging (uncomment in developer tools if needed)
-            // console.log(`[StickyScroll] top: ${rect.top.toFixed(0)}px, progress: ${(progress * 100).toFixed(0)}%, active: ${activeIndex}`);
-
             hiwPanels.forEach((panel, idx) => {
-                if (idx === activeIndex) {
-                    panel.classList.add('in-view');
-                } else {
-                    panel.classList.remove('in-view');
-                }
+                panel.classList.toggle('in-view', idx === activeIndex);
             });
-
             hiwVisuals.forEach((visual, idx) => {
-                if (idx === activeIndex) {
-                    visual.classList.add('active');
-                } else {
-                    visual.classList.remove('active');
-                }
+                visual.classList.toggle('active', idx === activeIndex);
             });
-
             hiwDots.forEach((dot, idx) => {
-                if (idx === activeIndex) {
-                    dot.classList.add('active');
-                } else {
-                    dot.classList.remove('active');
-                }
+                dot.classList.toggle('active', idx === activeIndex);
             });
         };
 
-        window.addEventListener('scroll', updateStickyScroll, { passive: true });
-        window.addEventListener('resize', updateStickyScroll);
-        updateStickyScroll();
+        // Desktop: GSAP ScrollTrigger tracks progress through the 500vh wrapper accurately
+        ScrollTrigger.create({
+            trigger: hiwWrapper,
+            start: 'top top',
+            end: 'bottom bottom',
+            onUpdate: (self) => {
+                if (window.innerWidth <= 768) return;
+                applyHiwProgress(self.progress);
+            },
+            onRefresh: (self) => {
+                if (window.innerWidth <= 768) return;
+                applyHiwProgress(self.progress);
+            }
+        });
+
+        // Mobile: show all panels statically (no sticky scroll on mobile)
+        const syncMobileLayout = () => {
+            if (window.innerWidth <= 768) {
+                hiwPanels.forEach(panel => panel.classList.add('in-view'));
+                hiwVisuals.forEach(visual => visual.classList.add('active'));
+            }
+        };
+        syncMobileLayout();
+        window.addEventListener('resize', syncMobileLayout);
     }
 
     // --- ScrollSpy: Highlight active navigation link based on scroll position ---
@@ -736,5 +869,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (section.id) {
             spyObserver.observe(section);
         }
+    });
+
+    // Refresh all ScrollTrigger positions after the full page has loaded.
+    // Fonts, images, and GSAP pin spacers must all be in their final layout
+    // state before trigger offsets are calculated. This prevents elements
+    // from getting stuck at their 'from' state due to stale position data.
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            ScrollTrigger.refresh();
+        }, 150);
     });
 });

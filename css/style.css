@@ -11,7 +11,7 @@
   --color-pure-white: #ffffff;
   --color-fog: #f7f7f8;
   --color-ash: #4c4c4c;
-  --color-graphite: #777b86;
+  --color-graphite: #5f626c;
   --color-dove: #a3a6af;
   --color-slate: #8b8c8d;
   --color-obsidian: #000000;
@@ -1042,13 +1042,17 @@ label {
 
 /* Scrolled Header Style */
 .main-header {
-  transition: padding 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  transition: padding 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .main-header.scrolled {
   padding: 10px 24px;
   background-color: rgba(255, 255, 255, 0.96);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
   border-bottom-color: rgba(0, 0, 0, 0.05);
+}
+.main-header.nav-hidden {
+  transform: translateY(-100%);
+  pointer-events: none;
 }
 
 /* Success Modal */

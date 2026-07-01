@@ -1,5 +1,14 @@
 import { defineConfig } from 'vite';
+import { resolve } from 'path';
 
 export default defineConfig({
-  base: './', // Use relative paths for assets so it works perfectly on GitHub Pages sub-paths
+  base: './', // Relative base path for flexible hosting
+  build: {
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        en: resolve(__dirname, 'en/index.html'),
+      },
+    },
+  },
 });

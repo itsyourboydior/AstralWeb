@@ -24,5 +24,4 @@ Allow: /
 User-agent: CCBot
 Disallow: /
 
-Sitemap: https://astralweb.net/sitemap.xml
-
+Sitemap: https://astralweb.github.io/sitemap.xml

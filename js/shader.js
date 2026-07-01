@@ -11,14 +11,18 @@ class ShaderBackground {
         }
 
         this.time = 0;
+        this.isIntersecting = true; // Visibility state in viewport
         this.resize();
         this.initShaders();
         this.initBuffers();
         this.setupUniforms();
 
+        // Set up viewport observer
+        this.setupIntersectionObserver();
+
         window.addEventListener('resize', () => this.resize());
         document.addEventListener('visibilitychange', () => {
-            if (!document.hidden) {
+            if (!document.hidden && this.isIntersecting) {
                 this.render();
             } else {
                 if (this._rafId) cancelAnimationFrame(this._rafId);
@@ -36,10 +40,28 @@ class ShaderBackground {
             this.initShaders();
             this.initBuffers();
             this.setupUniforms();
-            this.render();
+            if (this.isIntersecting) this.render();
         }, false);
+    }
 
-        this.render();
+    setupIntersectionObserver() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                this.isIntersecting = entry.isIntersecting;
+                if (this.isIntersecting) {
+                    if (!this._rafId) {
+                        this.render();
+                    }
+                } else {
+                    if (this._rafId) {
+                        cancelAnimationFrame(this._rafId);
+                        this._rafId = null;
+                    }
+                }
+            });
+        }, { threshold: 0.01 });
+
+        observer.observe(this.canvas);
     }
 
     resize() {
@@ -235,7 +257,12 @@ class ShaderBackground {
     }
 
     render() {
-        if (!this.program || document.hidden) return;
+        // Stop rendering if tab hidden, program missing, OR canvas scrolled out of view
+        if (!this.program || document.hidden || !this.isIntersecting) {
+            if (this._rafId) cancelAnimationFrame(this._rafId);
+            this._rafId = null;
+            return;
+        }
 
         // Animate consistently at 60fps
         this.time += 0.04;
