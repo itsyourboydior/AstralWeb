@@ -1,7 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
+
     // Register ScrollTrigger
     gsap.registerPlugin(ScrollTrigger);
+
+    // V3.1: Respect user motion preferences globally
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const hasFinePointer = window.matchMedia('(pointer: fine)').matches;
 
     // Language Toggle Mechanism
     const langToggle = document.getElementById('langToggle');
@@ -109,6 +113,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Emit Language Change Custom Event
         const event = new CustomEvent('languagechange', { detail: { lang } });
         document.dispatchEvent(event);
+
+        // Refresh ScrollTrigger to recalculate coordinates with translated texts
+        ScrollTrigger.refresh();
     };
 
     if (langToggle && langToggle.tagName === 'BUTTON') {
@@ -159,6 +166,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         hamburgerBtn.addEventListener('click', toggleMobileNav);
 
+        // V3.1.1: with a static header, make sure a tap outside the links always closes the menu
+        mobileNavOverlay.addEventListener('click', (e) => {
+            if (e.target === mobileNavOverlay) toggleMobileNav();
+        });
+
         mobileNavLinks.forEach(link => {
             link.addEventListener('click', () => {
                 hamburgerBtn.classList.remove('active');
@@ -170,10 +182,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Scroll Assembly Animation Logic
-    // We use matchMedia to ensure this ONLY runs on Desktop (> 768px)
+    // We use matchMedia to ensure this ONLY runs on Desktop (> 768px) and never for reduced-motion users
     let mm = gsap.matchMedia();
 
-    mm.add("(min-width: 769px)", () => {
+    mm.add("(min-width: 769px) and (prefers-reduced-motion: no-preference)", () => {
         // Elements
         const home = document.getElementById('home');
         const heroText = document.querySelector('.hero-text-content');
@@ -184,8 +196,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const cardConv = document.getElementById('card-conv');
         const cardUptime = document.getElementById('card-uptime');
         const dashboard = document.getElementById('assembly-dashboard');
+        const wrapper = document.getElementById('assembly-wrapper');
         
-        if (!cardSeo || !cardPerf || !cardDesign || !cardConv || !cardUptime || !dashboard || !home) return;
+        if (!cardSeo || !cardPerf || !cardDesign || !cardConv || !cardUptime || !dashboard || !home || !wrapper) return;
 
         // Save original style attributes from HTML to perform clean coordinate measurements
         const originalStyles = {
@@ -194,7 +207,8 @@ document.addEventListener('DOMContentLoaded', () => {
             cardDesign: cardDesign.getAttribute('style') || '',
             cardConv: cardConv.getAttribute('style') || '',
             cardUptime: cardUptime.getAttribute('style') || '',
-            dashboard: dashboard.getAttribute('style') || ''
+            dashboard: dashboard.getAttribute('style') || '',
+            wrapper: wrapper.getAttribute('style') || ''
         };
 
         // Function to get relative coordinates between an element and a parent container
@@ -223,6 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
             cardConv.setAttribute('style', originalStyles.cardConv);
             cardUptime.setAttribute('style', originalStyles.cardUptime);
             dashboard.setAttribute('style', originalStyles.dashboard);
+            wrapper.setAttribute('style', originalStyles.wrapper);
 
             // 2. KEY FIX: Temporarily zero-out CSS rotation transforms before measuring.
             //    getBoundingClientRect() of a rotated element returns the axis-aligned bounding
@@ -236,7 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // 3. Temporarily set the dashboard to its final active state (centered in #home)
             gsap.set(dashboard, {
                 position: "absolute",
-                top: "50%",
+                top: "54%",
                 left: "50%",
                 xPercent: -50,
                 yPercent: -50,
@@ -280,6 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
             cardConv.setAttribute('style', originalStyles.cardConv);
             cardUptime.setAttribute('style', originalStyles.cardUptime);
             dashboard.setAttribute('style', originalStyles.dashboard);
+            wrapper.setAttribute('style', originalStyles.wrapper);
         }
 
         // Calculate deltas on page load
@@ -293,10 +309,20 @@ document.addEventListener('DOMContentLoaded', () => {
             gsap.set(heroGlow, { xPercent: -50, yPercent: -50, x: 0, y: 0 });
         }
 
+        // Set initial state for the wrapper
+        gsap.set(wrapper, {
+            x: 0,
+            y: 0,
+            scale: 1,
+            rotateX: 0,
+            rotateY: 0,
+            transformOrigin: "center center"
+        });
+
         // Define starting values for the animated dashboard
         gsap.set(dashboard, {
             position: "absolute",
-            top: "50%",
+            top: "54%",
             left: "50%",
             xPercent: -50,
             yPercent: -50,
@@ -310,9 +336,9 @@ document.addEventListener('DOMContentLoaded', () => {
             scrollTrigger: {
                 trigger: "#home",
                 start: "top top",      // pin when hero reaches top of viewport
-                end: "+=120%",         // pin duration (120% of viewport height)
+                end: "+=600%",         // V3.1.2: longer pin to slow down page scroll speed and give more screen time
                 pin: true,             // pin the hero section!
-                scrub: 1,              // smooth scrub linked to scroll
+                scrub: 1.5,            // V3.1.2: smoother scrub linked to scroll
                 invalidateOnRefresh: true,
                 onLeave: () => {
                     gsap.set(dashboard, { pointerEvents: "auto" }); // make dashboard clickable when assembled
@@ -406,6 +432,93 @@ document.addEventListener('DOMContentLoaded', () => {
             duration: 0.8,
             ease: "power2.out"
         }, 0.2);
+
+        // --- V3.1.1: Dashboard story beats (scrollytelling) ---
+        // Chapter 1 (0 → 1.0): the pieces assemble — "We design every detail."
+        // Chapter 2 (1.0 → 2.3): it becomes a real product — slots dissolve, the chart
+        //                        draws itself, traffic counts up — "We build with precision."
+        // Chapter 3 (2.3 → end): it goes LIVE — "The results speak for themselves."
+        const captions = Array.from(home.querySelectorAll('.assembly-caption'));
+        const slots = home.querySelectorAll('.slot-perf, .slot-seo, .slot-design, .slot-conv, .slot-uptime');
+        const chartPaths = home.querySelectorAll('.db-chart-svg path');
+        const chartLine = chartPaths[0];
+        const chartFill = chartPaths[1];
+        const trafficNum = home.querySelector('.db-traffic-num');
+        const trendBadge = home.querySelector('.db-trend-badge');
+        const liveBadge = home.querySelector('.db-live-badge');
+
+        if (captions[0]) {
+            // Shift wrapper right (+100px, 4deg) and fade in Caption 1 on the left (1.0 → 1.5).
+            tl.to(wrapper, { x: 100, rotateY: 4, rotateX: 1, duration: 0.5, ease: "power3.out" }, 1.0);
+            tl.fromTo(captions[0], { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.4, ease: "power3.out" }, 1.1);
+            
+            // Revert wrapper and fade out caption 1 (2.2 → 2.7)
+            tl.to(wrapper, { x: 0, rotateY: 0, rotateX: 0, duration: 0.5, ease: "power3.inOut" }, 2.2);
+            tl.to(captions[0], { opacity: 0, x: -40, duration: 0.3, ease: "power3.in" }, 2.2);
+        }
+
+        // Blueprint slots dissolve once the cards have landed — design becomes product
+        if (slots.length) {
+            tl.to(slots, { opacity: 0, duration: 0.3 }, 1.0);
+        }
+
+        if (captions[1]) {
+            // Animate wrapper: shift left and skew gently (-100px, -4deg) (2.7 → 3.2)
+            tl.to(wrapper, { x: -100, rotateY: -4, rotateX: 1, duration: 0.5, ease: "power3.out" }, 2.7);
+            tl.fromTo(captions[1], { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.4, ease: "power3.out" }, 2.8);
+            
+            // Revert wrapper and fade out caption 2 (4.2 → 4.7)
+            tl.to(wrapper, { x: 0, rotateY: 0, rotateX: 0, duration: 0.5, ease: "power3.inOut" }, 4.2);
+            tl.to(captions[1], { opacity: 0, x: 40, duration: 0.3, ease: "power3.in" }, 4.2);
+        }
+
+        // The analytics chart draws itself in, then its gradient fill washes up
+        if (chartLine && chartFill && chartLine.getTotalLength) {
+            const lineLength = chartLine.getTotalLength();
+            gsap.set(chartLine, { strokeDasharray: lineLength, strokeDashoffset: lineLength });
+            gsap.set(chartFill, { opacity: 0 });
+            tl.to(chartLine, { strokeDashoffset: 0, duration: 1.0, ease: "none" }, 2.7);
+            tl.to(chartFill, { opacity: 1, duration: 0.4 }, 3.5);
+        }
+
+        // Traffic counter climbs alongside the chart
+        if (trafficNum) {
+            const targetVal = parseInt(trafficNum.dataset.target, 10) || 0;
+            const counter = { v: 0 };
+            trafficNum.textContent = "0";
+            tl.to(counter, {
+                v: targetVal,
+                duration: 1.0,
+                ease: "power1.inOut",
+                onUpdate: () => { trafficNum.textContent = Math.round(counter.v).toLocaleString("en-US"); }
+            }, 2.7);
+        }
+
+        if (trendBadge) {
+            tl.fromTo(trendBadge,
+                { opacity: 0, scale: 0.4 },
+                { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }
+            , 3.6);
+        }
+
+        // Chapter 3: the dashboard goes LIVE (4.7 → 7.0, stays pinned for a long end screen)
+        if (liveBadge) {
+            tl.fromTo(liveBadge, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.4 }, 4.8);
+        }
+        if (captions[2]) {
+            // Animate wrapper: scale up slightly in center
+            tl.to(wrapper, { scale: 1.05, duration: 0.5, ease: "power3.out" }, 4.7);
+            
+            // Add/remove live glow on dashboard element
+            tl.to(dashboard, {
+                onStart: () => dashboard.classList.add('live-glow'),
+                onReverseComplete: () => dashboard.classList.remove('live-glow'),
+                duration: 0.1
+            }, 4.7);
+            
+            // Drop caption 3 down into view
+            tl.fromTo(captions[2], { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 4.9);
+        }
     });
 
     // Examples Carousel Logic (translating the React motion component behavior to Vanilla JS + GSAP)
@@ -529,49 +642,39 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Initial update
+        // Initial update (V3.1.1: autoplay removed — the carousel only moves when the user asks it to)
         updateCarousel(0);
     };
 
     initCarousel();
 
-    // --- Header Scrolled State + Direction-Aware Hide/Show ---
-    const headerEl = document.querySelector('.main-header');
-    if (headerEl) {
-        let lastScrollY = 0;
-        const checkScroll = () => {
-            const currentY = window.scrollY;
+    // V3.1.1: Header is completely static — all scroll-driven hide/show/shrink behavior removed.
 
-            // Compact glass state after 50px
-            if (currentY > 50) {
-                headerEl.classList.add('scrolled');
-            } else {
-                headerEl.classList.remove('scrolled');
-            }
+    // --- V3.1 Hero headline: split lines into masked spans for cinematic serif reveal ---
+    const heroTitle = document.querySelector('.hero-text-content h1');
 
-            // Hide nav when scrolling DOWN past 80px — re-show when scrolling back UP
-            if (currentY > 80) {
-                if (currentY > lastScrollY) {
-                    headerEl.classList.add('nav-hidden');
-                } else {
-                    headerEl.classList.remove('nav-hidden');
-                }
-            } else {
-                headerEl.classList.remove('nav-hidden');
-            }
+    const splitHeroLines = () => {
+        if (!heroTitle) return [];
+        const parts = heroTitle.innerHTML.split(/<br\s*\/?>/i);
+        heroTitle.innerHTML = parts
+            .map(part => `<span class="hero-line"><span class="hero-line-inner">${part}</span></span>`)
+            .join('');
+        return Array.from(heroTitle.querySelectorAll('.hero-line-inner'));
+    };
 
-            lastScrollY = currentY;
-        };
-        window.addEventListener('scroll', checkScroll, { passive: true });
-        checkScroll(); // Check once on load
-    }
+    const heroLines = splitHeroLines();
+
+    // Re-split whenever the language swap rewrites the h1 content (keeps final visible state)
+    document.addEventListener('languagechange', () => {
+        const lines = splitHeroLines();
+        gsap.set(lines, { yPercent: 0, rotation: 0 });
+    });
 
     // --- Page Load Animations (GSAP) ---
     // Make sure elements exist before running timelines
-    const heroTitle = document.querySelector('.hero-text-content h1');
-    if (heroTitle) {
+    if (heroTitle && !prefersReducedMotion) {
         const loadTl = gsap.timeline();
-        
+
         // Header elements and Hero elements animate simultaneously at time 0
         loadTl.from('.logo-container img', {
             y: -20,
@@ -592,25 +695,76 @@ document.addEventListener('DOMContentLoaded', () => {
             duration: 0.5,
             ease: 'power2.out'
         }, 0)
-        .from('.hero-text-content h1', {
-            y: 40,
-            opacity: 0,
-            duration: 0.8,
-            ease: 'power3.out'
-        }, 0)
+        .fromTo(heroLines,
+            { yPercent: 115, rotation: 3, transformOrigin: 'left bottom' },
+            { yPercent: 0, rotation: 0, duration: 1.15, stagger: 0.14, ease: 'power4.out' }
+        , 0.1)
         .from('.hero-text-content p', {
             y: 30,
             opacity: 0,
             duration: 0.8,
             ease: 'power3.out'
-        }, 0.1) // Subtitle starts with a microscopic offset for a organic feel
+        }, 0.55)
         .from('.hero-cta-group', {
             y: 20,
             opacity: 0,
             duration: 0.6,
             ease: 'power3.out'
-        }, 0.2); // Hero buttons start with a microscopic offset
+        }, 0.7)
+        .from('.hero-mobile-stats .mobile-stat-chip', {
+            y: 24,
+            opacity: 0,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: 'back.out(1.6)',
+            clearProps: 'transform,opacity' // hand back to the CSS float animation when done
+        }, 0.85);
     }
+
+    // --- V3.1 Magnetic CTAs (desktop pointers only) ---
+    if (!prefersReducedMotion && hasFinePointer) {
+        document.querySelectorAll('.hero-cta-group a, .header-actions .btn-filled').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const relX = e.clientX - rect.left - rect.width / 2;
+                const relY = e.clientY - rect.top - rect.height / 2;
+                gsap.to(btn, {
+                    x: (relX / rect.width) * 14,
+                    y: (relY / rect.height) * 8,
+                    duration: 0.4,
+                    ease: 'power2.out'
+                });
+            });
+            btn.addEventListener('mouseleave', () => {
+                gsap.to(btn, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1, 0.45)' });
+            });
+        });
+    }
+
+    // --- V3.1 Stats strip count-up ---
+    const statNums = document.querySelectorAll('.stat-num[data-count]');
+    statNums.forEach(el => {
+        const target = parseFloat(el.dataset.count);
+        const decimals = parseInt(el.dataset.decimals || '0', 10);
+        if (isNaN(target)) return;
+        if (prefersReducedMotion) {
+            el.textContent = target.toFixed(decimals);
+            return;
+        }
+        const counter = { val: 0 };
+        gsap.to(counter, {
+            val: target,
+            duration: 1.8,
+            ease: 'power2.out',
+            scrollTrigger: {
+                trigger: el,
+                start: 'top 88%',
+                once: true
+            },
+            onUpdate: () => { el.textContent = counter.val.toFixed(decimals); },
+            onComplete: () => { el.textContent = target.toFixed(decimals); }
+        });
+    });
 
     // --- Scroll Reveal Animations (ScrollTrigger) ---
     // Using gsap.fromTo() instead of gsap.from() to GUARANTEE the final state (opacity:1, y:0)
@@ -619,7 +773,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 1. Service Cards stagger reveal
     const serviceCards = document.querySelectorAll('#services .service-card');
-    if (serviceCards.length > 0) {
+    if (serviceCards.length > 0 && !prefersReducedMotion) {
         gsap.fromTo(serviceCards,
             { y: 60, opacity: 0 },
             {
@@ -639,7 +793,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2. Process Section Left Header reveal
     const hiwHeader = document.querySelector('.hiw-header-side');
-    if (hiwHeader) {
+    if (hiwHeader && !prefersReducedMotion) {
         gsap.fromTo(hiwHeader.children,
             { y: 35, opacity: 0 },
             {
@@ -659,7 +813,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 3. FAQ Items stagger reveal
     const faqItemsReveal = document.querySelectorAll('#faq .faq-item');
-    if (faqItemsReveal.length > 0) {
+    if (faqItemsReveal.length > 0 && !prefersReducedMotion) {
         gsap.fromTo(faqItemsReveal,
             { y: 40, opacity: 0 },
             {
@@ -679,7 +833,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 4. Contact Form Grid columns reveal
     const contactCols = document.querySelectorAll('#contact .grid-2 > div');
-    if (contactCols.length > 0) {
+    if (contactCols.length > 0 && !prefersReducedMotion) {
         gsap.fromTo(contactCols,
             { y: 50, opacity: 0 },
             {
@@ -700,7 +854,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 5. Section headers reveal (excluding hero)
     const sectionHeaders = document.querySelectorAll('.container > div:first-child');
     sectionHeaders.forEach(headerBlock => {
-        if (headerBlock.closest('#home')) return;
+        if (headerBlock.closest('#home') || prefersReducedMotion) return;
         gsap.fromTo(Array.from(headerBlock.children),
             { y: 35, opacity: 0 },
             {

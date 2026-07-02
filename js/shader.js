@@ -12,6 +12,8 @@ class ShaderBackground {
 
         this.time = 0;
         this.isIntersecting = true; // Visibility state in viewport
+        // V3.1: reduced-motion users get a single static gradient frame
+        this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         this.resize();
         this.initShaders();
         this.initBuffers();
@@ -280,6 +282,12 @@ class ShaderBackground {
         this.gl.uniform1f(this.motionScaleLoc, motionScale);
 
         this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
+
+        // Static single frame for reduced-motion users — still gorgeous, zero movement
+        if (this.reducedMotion) {
+            this._rafId = null;
+            return;
+        }
 
         this._rafId = requestAnimationFrame(() => this.render());
     }
